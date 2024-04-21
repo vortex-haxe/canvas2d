@@ -1,0 +1,21 @@
+{
+    "name": "canvas2d",
+    "url" : "https://github.com/vortex-haxe/canvas2d",
+    "license": "MIT",
+    "tags": ["haxe", "canvas2d", "2d", "2d-framework", "hxcpp", "cpp", "sdl", "stb_vorbis", "vorbis", "dr_wav", "wav", "ogg"],
+    "description": "The core backend library used to power Vortex, designed to provide an OpenFL-esk architecture for you to build amazing things!",
+    "version": "0.1.0",
+    "classPath": "src/",
+    "releasenote": "The initial release of Canvas2D. Please report issues/bugs over on Github!",
+    "contributors": ["swordcube"],
+    "dependencies": {
+        "hxcpp": "",
+        "hxsdl": "",
+        "hxstb_image": "",
+        "hxglad": "",
+        "hxdr_mp3": "",
+        "hxdr_wav": "",
+        "hxstb_vorbis": "",
+        "hxal": ""
+    }
+}
