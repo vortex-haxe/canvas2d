@@ -1,4 +1,4 @@
-<img src="github/logo.png" align="right" width="256" height="256" />
+<img src="github/logo.png" align="right" width="128" height="128" />
 
 # 🖌 Canvas2D 
 The core backend library used to power Vortex, designed to abstract lower level
