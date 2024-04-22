@@ -1,0 +1,17 @@
+--library hxsdl
+--library hxstb_image
+--library hxglad
+--library hxdr_mp3
+--library hxdr_wav
+--library hxstb_vorbis
+--library hxal
+
+--class-path src
+
+--define analyzer-optimize
+--define SDL_PREFIX
+--dce no
+
+--macro canvas._backend.macros.OSDefineMacro.build()
+
+--cpp export/cpp

@@ -4,17 +4,17 @@
 The core backend library used to power Vortex, designed to abstract lower level
 parts of an application/game engine into friendlier classes/functions.
 
-It also allows you to setup projects easier with `config.xml` files!
+The library is meant to feel like **[lime](https://github.com/openfl/lime)** and **[openfl](https://github.com/openfl/openfl)** combined into one whole library, with fresh backends pulled away from Flash!
+
+You setup your Canvas2D projects with `config.xml` files!
 These files configure things such as window title, framerate, etc.
 
-You can look at the wiki to find out what these files do or
-look at the sample provided in the main source folder!
+Refer to the wiki for an explanation on what `config.xml` files do.
 
-If you setup a project this way, you can build your app with the following command:
+Testing your project is as simple as one command:
 ```bat
 haxelib run canvas2d test
 ```
-It's that simple!
 
 ## 🖥 Platforms
 Canvas2D can natively compile to the following platforms via `hxcpp`:
