@@ -44,7 +44,7 @@ class Shader {
 		uniform sampler2D TEXTURE;
 		uniform vec4 MODULATE;
 		in vec2 UV;
-		out vec4 COLOR;
+		layout(location = 0) out vec4 COLOR;
 	";
 
 	public static final FRAGMENT_DEFAULT:String = "

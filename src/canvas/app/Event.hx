@@ -83,7 +83,7 @@ class Event<T> {
      * @param  listener  A callback that matches the signature of the event
      * 
      * @return Whether the callback is a listener
-    **/
+     */
     public function has(listener:T):Bool {
         #if !macro
         for (l in __listeners) {
@@ -98,7 +98,7 @@ class Event<T> {
      * Removes an event listener
      * 
      * @param  listener  A callback that matches the signature of the event
-    **/
+     */
     public function remove(listener:T):Void {
         #if !macro
         var i = __listeners.length;
