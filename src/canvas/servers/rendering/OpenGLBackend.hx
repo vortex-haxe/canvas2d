@@ -220,6 +220,8 @@ class OpenGLQuadRenderer implements IQuadRenderer {
 @:access(canvas.ui.Window)
 @:access(canvas.graphics.Shader)
 class OpenGLBackend extends RenderingBackend {
+    private static var _vec:Vector2 = new Vector2();
+
     private var colorRectShader:Shader;
 
     /**
@@ -260,9 +262,9 @@ class OpenGLBackend extends RenderingBackend {
     override function clear(window:Window):Void {
         DisplayServer.backend.useWindowContext(window._nativeWindow);
         Glad.clear(Glad.COLOR_BUFFER_BIT);
-
+        
         colorRectShader.useProgram();
-        quadRenderer.drawColor(Vector2i.ZERO, window.initialSize, RenderingServer.clearColor);
+        quadRenderer.drawColor(Vector2.ZERO, _vec.set(window.initialSize.x, window.initialSize.y), RenderingServer.clearColor);
     }
  
     /**
