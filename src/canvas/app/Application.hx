@@ -7,6 +7,8 @@ import cpp.vm.Gc;
 import canvas._backend.macros.ProjectMacro;
 import canvas.ui.Window;
 
+import canvas.graphics.Texture;
+
 import canvas.servers.DisplayServer;
 import canvas.servers.RenderingServer;
 import canvas.servers.AudioServer;
@@ -22,6 +24,7 @@ import sdl.Types.SDLWindowPos;
  * The very base of your games!
  */
 @:access(canvas.ui.Window)
+@:access(canvas.graphics.Texture)
 @:autoBuild(canvas._backend.macros.ApplicationMacro.build())
 class Application extends Canvas {
 	/**
@@ -77,7 +80,7 @@ class Application extends Canvas {
 
 			_deltaTime = untyped __cpp__("(double)({0} - {1}) / (double){2}", curTime, oldTime, SDL.getPerformanceFrequency());
 			update(_deltaTime);
-			draw();
+			_safeDraw();
 
 			if(windows.length != 0)
 				windows[0].children = children;
@@ -87,9 +90,13 @@ class Application extends Canvas {
 				if(window != null) {
 					RenderingServer.backend.clear(window);
 
+					if(Texture._currentRenderTex != null)
+						RenderingServer.backend.useFrameBuffer(Texture._currentRenderTex._frameBuffer);
+
 					window.update(_deltaTime);
-					window.draw();
+					window._safeDraw();
 					
+					RenderingServer.backend.useFrameBuffer(null);
 					RenderingServer.backend.present(window);
 				}
 			}

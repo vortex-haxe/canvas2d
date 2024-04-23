@@ -1,6 +1,8 @@
 package canvas;
 
+import canvas.graphics.Texture;
 import canvas.math.Vector2;
+import canvas.servers.RenderingServer;
 
 /**
  * An updatable and drawable canvas that can
@@ -9,6 +11,7 @@ import canvas.math.Vector2;
  * This class is designed to have similar functionality
  * to OpenFL's Sprite class.
  */
+@:access(canvas.graphics.Texture)
 class Canvas {
     /**
      * The children of this canvas.
@@ -43,6 +46,15 @@ class Canvas {
      * The layer index of this canvas according to it's parent.
      */
     public var layer(get, never):Int;
+
+    /**
+     * Whether or not this canvas object can be
+     * captured onto a render texture.
+     * 
+     * This applies to all of the children of
+     * this canvas aswell.
+     */
+    public var capturable:Bool = true;
 
     /**
      * Makes a new `Canvas` instance.
@@ -94,7 +106,7 @@ class Canvas {
     }
 
     /**
-     * Updates this canvas object.
+     * Updates this canvas object and it's children.
      * Override this function to update your own stuff aswell!
      * 
      * Remember to call `super.update(delta)` to ensure
@@ -111,7 +123,7 @@ class Canvas {
     }
 
     /**
-     * Draws this canvas object.
+     * Draws this canvas object and it's children.
      * Override this function to draw your own stuff aswell!
      * 
      * Remember to call `super.draw()` to ensure
@@ -137,6 +149,16 @@ class Canvas {
     // --------------- //
     // [ Private API ] //
     // --------------- //
+
+    private function _safeDraw():Void {
+        if(!capturable)
+            RenderingServer.backend.useFrameBuffer(null);
+
+        draw();
+
+        if(!capturable && Texture._currentRenderTex != null)
+            RenderingServer.backend.useFrameBuffer(Texture._currentRenderTex._frameBuffer);
+    }
 
     @:noCompletion
     private function get_layer():Int {

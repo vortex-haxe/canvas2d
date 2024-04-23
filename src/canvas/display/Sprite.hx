@@ -54,10 +54,10 @@ class Sprite extends Canvas {
      */
     override function draw() {
         @:privateAccess
-        if(texture != null && texture.textureData != null) {
+        if(texture != null && texture._data != null) {
             final shader:Shader = this.shader ?? RenderingServer.backend.defaultShader;
             shader.useProgram();
-            RenderingServer.backend.quadRenderer.texture = texture.textureData;
+            RenderingServer.backend.quadRenderer.texture = texture._data;
             RenderingServer.backend.quadRenderer.drawTexture(_pos.set(x, y), _size.set(texture.size.x * scale.x, texture.size.y * scale.y), tint, _clipRectUVCoords, Vector2.ZERO, 0);
         }
         super.draw();

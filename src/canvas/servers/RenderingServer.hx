@@ -66,6 +66,10 @@ interface IQuadRenderer {
 	public function dispose():Void;
 }
 
+interface IFrameBufferData {
+	public var buffer:Any;
+}
+
 class RenderingBackend {
 	public var quadRenderer:IQuadRenderer;
 	public var defaultShader:Shader;
@@ -91,6 +95,28 @@ class RenderingBackend {
 	 * Presents/renders whatever is on-screen currently.
 	 */
 	public function present(window:Window):Void {}
+
+	/**
+	 * TODO: Implement this!
+	 */
+	public function createFrameBuffer():IFrameBufferData {
+		return null;
+	}
+
+	/**
+	 * TODO: Implement this!
+	 */
+	public function setupFrameBuffer(frameBuffer:IFrameBufferData, texture:ITextureData):Void {}
+
+	/**
+	 * TODO: Implement this!
+	 */
+	public function disposeFrameBuffer(frameBuffer:IFrameBufferData):Void {}
+
+	/**
+	 * TODO: Implement this!
+	 */
+	public function useFrameBuffer(frameBuffer:IFrameBufferData):Void {}
 
 	/**
 	 * TODO: Implement this!

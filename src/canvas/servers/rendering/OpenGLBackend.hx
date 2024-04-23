@@ -1,5 +1,7 @@
 package canvas.servers.rendering;
 
+import cpp.RawConstPointer;
+import cpp.ConstPointer;
 import cpp.UInt32;
 import cpp.Float32;
 import cpp.Pointer;
@@ -214,6 +216,14 @@ class OpenGLQuadRenderer implements IQuadRenderer {
     }
 }
 
+class OpenGLFrameBuffer implements IFrameBufferData {
+	public var buffer:Any;
+
+    public function new(buffer:UInt32) {
+        this.buffer = buffer;
+    }
+}
+
 /**
  * The OpenGL rendering backend.
  */
@@ -274,30 +284,40 @@ class OpenGLBackend extends RenderingBackend {
         DisplayServer.backend.present(window._nativeWindow);
     }
 
-    private static function getOpenGLWrap(wrapping:TextureWrapping):Int {
-        switch (wrapping) {
-            case REPEAT:
-                return Glad.REPEAT;
-            case MIRRORED_REPEAT:
-                return Glad.MIRRORED_REPEAT;
-            case CLAMP_EDGE:
-                return Glad.CLAMP_TO_EDGE;
-            case CLAMP_BORDER:
-                return Glad.CLAMP_TO_BORDER;
-        }
+    /**
+	 * TODO: Implement this!
+	 */
+	override function createFrameBuffer():IFrameBufferData {
+        var id:UInt32 = 0;
+        Glad.createFramebuffers(1, Helpers.tempPointer(id));
+        Glad.bindFramebuffer(Glad.FRAMEBUFFER, id);
+		return new OpenGLFrameBuffer(id);
+	}
 
-        return -1;
+	/**
+	 * TODO: Implement this!
+	 */
+	override function setupFrameBuffer(frameBuffer:IFrameBufferData, texture:ITextureData):Void {
+        Glad.framebufferTexture(Glad.FRAMEBUFFER, Glad.COLOR_ATTACHMENT0, texture.texture, 0);
+        untyped __cpp__("GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0}");
+        Glad.drawBuffers(1, untyped __cpp__("DrawBuffers"));
     }
 
-    private static function getOpenGLFilter(filter:TextureFilter):Int {
-        switch (filter) {
-            case LINEAR:
-                return Glad.LINEAR;
-            case NEAREST:
-                return Glad.NEAREST;
-        }
+	/**
+	 * TODO: Implement this!
+	 */
+	override function disposeFrameBuffer(frameBuffer:IFrameBufferData):Void {
+        Glad.deleteFramebuffers(1, Helpers.tempPointer(frameBuffer.buffer));
+    }
 
-        return -1;
+    /**
+	 * TODO: Implement this!
+	 */
+	override function useFrameBuffer(frameBuffer:IFrameBufferData):Void {
+        if(frameBuffer != null)
+            Glad.bindFramebuffer(Glad.FRAMEBUFFER, frameBuffer.buffer);
+        else
+            Glad.bindFramebuffer(Glad.FRAMEBUFFER, 0);
     }
 
     /**
@@ -314,10 +334,10 @@ class OpenGLBackend extends RenderingBackend {
         if(mipmaps)
             Glad.generateMipmap(Glad.TEXTURE_2D);
 
-        Glad.texParameteri(Glad.TEXTURE_2D, Glad.TEXTURE_WRAP_S, getOpenGLWrap(wrapping));
-        Glad.texParameteri(Glad.TEXTURE_2D, Glad.TEXTURE_WRAP_T, getOpenGLWrap(wrapping));
-        Glad.texParameteri(Glad.TEXTURE_2D, Glad.TEXTURE_MIN_FILTER, getOpenGLFilter(filter));
-        Glad.texParameteri(Glad.TEXTURE_2D, Glad.TEXTURE_MAG_FILTER, getOpenGLFilter(filter));
+        Glad.texParameteri(Glad.TEXTURE_2D, Glad.TEXTURE_WRAP_S, _getOpenGLWrap(wrapping));
+        Glad.texParameteri(Glad.TEXTURE_2D, Glad.TEXTURE_WRAP_T, _getOpenGLWrap(wrapping));
+        Glad.texParameteri(Glad.TEXTURE_2D, Glad.TEXTURE_MIN_FILTER, _getOpenGLFilter(filter));
+        Glad.texParameteri(Glad.TEXTURE_2D, Glad.TEXTURE_MAG_FILTER, _getOpenGLFilter(filter));
 
         var textureData:OpenGLTextureData = new OpenGLTextureData(id, new Vector2i(width, height), channels, mipmaps, wrapping, filter);
         return textureData;
@@ -442,5 +462,35 @@ class OpenGLBackend extends RenderingBackend {
     override function dispose():Void {
         quadRenderer.dispose();
         quadRenderer = null;
+    }
+
+    // --------------- //
+    // [ Private API ] //
+    // --------------- //
+
+    private static function _getOpenGLWrap(wrapping:TextureWrapping):Int {
+        switch (wrapping) {
+            case REPEAT:
+                return Glad.REPEAT;
+            case MIRRORED_REPEAT:
+                return Glad.MIRRORED_REPEAT;
+            case CLAMP_EDGE:
+                return Glad.CLAMP_TO_EDGE;
+            case CLAMP_BORDER:
+                return Glad.CLAMP_TO_BORDER;
+        }
+
+        return -1;
+    }
+
+    private static function _getOpenGLFilter(filter:TextureFilter):Int {
+        switch (filter) {
+            case LINEAR:
+                return Glad.LINEAR;
+            case NEAREST:
+                return Glad.NEAREST;
+        }
+
+        return -1;
     }
 }
