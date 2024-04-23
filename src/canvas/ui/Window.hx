@@ -1,22 +1,25 @@
 package canvas.ui;
 
-import canvas.graphics.Shader;
-import canvas.math.Matrix4x4;
-import canvas.servers.rendering.OpenGLBackend.OpenGLQuadRenderer;
 import sdl.SDL;
+import sdl.Types.SDLRawEvent;
 import sdl.Types.SDLEvent;
 import sdl.Types.SDLMouseButton;
+import sdl.Types.SDLWindowEventID;
 
 import canvas.app.Application;
 import canvas.app.Event;
 
+import canvas.graphics.Shader;
+
 import canvas.math.Vector2i;
 import canvas.math.Rectanglei;
+import canvas.math.Matrix4x4;
 
 import canvas.servers.DisplayServer;
 import canvas.servers.DisplayServer.IWindowData;
 
 import canvas.servers.RenderingServer;
+import canvas.servers.rendering.OpenGLBackend.OpenGLQuadRenderer;
 
 @:access(canvas.app.Application)
 @:access(canvas.graphics.Shader)
@@ -84,7 +87,7 @@ class Window extends Canvas {
 	public var onResize:Event<Int->Int->Void> = new Event<Int->Int->Void>();
 
 	/**
-	 * The signal that gets emitted when the window recieves a key press.
+	 * The signal that gets emitted when the window receives a key press.
 	 * 
 	 * Parameters are:
 	 * - Key Code
@@ -93,7 +96,7 @@ class Window extends Canvas {
 	public var onKeyPress:Event<KeyCode->KeyMod->Void> = new Event<KeyCode->KeyMod->Void>();
 
 	/**
-	 * The signal that gets emitted when the window recieves a key release.
+	 * The signal that gets emitted when the window receives a key release.
 	 * 
 	 * Parameters are:
 	 * - Key Code
@@ -102,7 +105,7 @@ class Window extends Canvas {
 	public var onKeyRelease:Event<KeyCode->KeyMod->Void> = new Event<KeyCode->KeyMod->Void>();
 
 	/**
-	 * The signal that gets emitted when the window recieves a mouse click.
+	 * The signal that gets emitted when the window receives a mouse click.
 	 * 
 	 * Parameters are:
 	 * - Mouse Button
@@ -110,7 +113,7 @@ class Window extends Canvas {
 	public var onMouseClick:Event<SDLMouseButton->Void> = new Event<SDLMouseButton->Void>();
 
 	/**
-	 * The signal that gets emitted when the window recieves a mouse release.
+	 * The signal that gets emitted when the window receives a mouse release.
 	 * 
 	 * Parameters are:
 	 * - Mouse Button
@@ -118,7 +121,7 @@ class Window extends Canvas {
 	public var onMouseRelease:Event<SDLMouseButton->Void> = new Event<SDLMouseButton->Void>();
 
 	/**
-	 * The signal that gets emitted when the window recieves a mouse movement.
+	 * The signal that gets emitted when the window receives a mouse movement.
 	 * 
 	 * Parameters are:
 	 * - Mouse Button
@@ -128,6 +131,12 @@ class Window extends Canvas {
 	 * - Mouse Y (Relative)
 	 */
 	public var onMouseMove:Event<SDLMouseButton->Int->Int->Int->Int->Void> = new Event<SDLMouseButton->Int->Int->Int->Int->Void>();
+
+	/**
+	 * The signal that gets emitted when the window receives an
+	 * event that isn't handled by Canvas2D automatically.
+	 */
+	public var onMiscEvent:Event<SDLWindowEventID->SDLRawEvent->Void> = new Event<SDLWindowEventID->SDLRawEvent->Void>();
 
 	/**
 	 * Makes a new `Window`.
@@ -148,6 +157,22 @@ class Window extends Canvas {
 			};
 		}
 		Application.current.windows.push(this);
+	}
+	
+	public function changeViewportSize(newWidth:Int, newHeight:Int):Void {
+		RenderingServer.backend.setViewportRect(_recti.set(
+			0, 0,
+			newWidth, newHeight
+		));
+		if(RenderingServer.backend.quadRenderer is OpenGLQuadRenderer) {
+			final quadRenderer:OpenGLQuadRenderer = cast RenderingServer.backend.quadRenderer;
+			quadRenderer.projection = Matrix4x4.ortho(0, newWidth, newHeight, 0, -1, 1);
+
+			for(shader in Shader._shaders) {
+				shader.useProgram();
+				shader.setUniformMat4x4("PROJECTION", quadRenderer.projection);
+			}
+		}
 	}
 
 	/**
@@ -188,20 +213,8 @@ class Window extends Canvas {
 						case RESIZED:
 							final newWidth:Int = _ev.ref.window.data1;
 							final newHeight:Int = _ev.ref.window.data2;
-							RenderingServer.backend.setViewportRect(_recti.set(
-								0, 0,
-								newWidth, newHeight
-							));
-							if(RenderingServer.backend.quadRenderer is OpenGLQuadRenderer) {
-								final quadRenderer:OpenGLQuadRenderer = cast RenderingServer.backend.quadRenderer;
-								quadRenderer.projection = Matrix4x4.ortho(0, newWidth, newHeight, 0, -1, 1);
+							changeViewportSize(newWidth, newHeight);
 
-								@:privateAccess
-								for(shader in Shader._shaders) {
-									shader.useProgram();
-									shader.setUniformMat4x4("PROJECTION", quadRenderer.projection);
-								}
-							}
 							@:bypassAccessor size.x = newWidth;
 							@:bypassAccessor size.y = newHeight;
 							onResize.dispatch(newWidth, newHeight);
@@ -225,9 +238,9 @@ class Window extends Canvas {
 					onMouseRelease.dispatch(_ev.ref.button.button);
 	
 				default:
+					onMiscEvent.dispatch(_ev.ref.window.event, _ev.ref);
 			}
 		}
-		_created = true;
 	}
 	
 	/**
@@ -254,5 +267,4 @@ class Window extends Canvas {
 	private static var _recti:Rectanglei = new Rectanglei();
 
 	private var _nativeWindow:IWindowData;
-	private var _created:Bool = false;
 }

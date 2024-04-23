@@ -311,9 +311,8 @@ class OpenGLBackend extends RenderingBackend {
         var format:Int = (channels == 4) ? Glad.RGBA : Glad.RGB;
         Glad.texImage2D(Glad.TEXTURE_2D, 0, format, width, height, 0, format, Glad.UNSIGNED_BYTE, data);
 
-        if (mipmaps) {
+        if(mipmaps)
             Glad.generateMipmap(Glad.TEXTURE_2D);
-        }
 
         Glad.texParameteri(Glad.TEXTURE_2D, Glad.TEXTURE_WRAP_S, getOpenGLWrap(wrapping));
         Glad.texParameteri(Glad.TEXTURE_2D, Glad.TEXTURE_WRAP_T, getOpenGLWrap(wrapping));
