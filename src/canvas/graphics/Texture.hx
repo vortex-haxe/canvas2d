@@ -66,6 +66,9 @@ class Texture {
 
         switch(type) {
             case RENDER:
+                size.set(width, height);
+                numChannels = 3;
+                
                 _frameBuffer = RenderingServer.backend.createFrameBuffer();
 
                 final _tex = RenderingServer.backend.createTexture(width, height, null, 3);
@@ -140,6 +143,7 @@ class Texture {
             return;
         }
         _currentRenderTex = this;
+        RenderingServer.backend.useFrameBuffer(_frameBuffer);
     }
 
     /**
@@ -156,6 +160,7 @@ class Texture {
             return;
         }
         _currentRenderTex = null;
+        RenderingServer.backend.useFrameBuffer(null);
     }
 
     // [ Private API ] //

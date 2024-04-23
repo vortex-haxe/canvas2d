@@ -289,7 +289,7 @@ class OpenGLBackend extends RenderingBackend {
 	 */
 	override function createFrameBuffer():IFrameBufferData {
         var id:UInt32 = 0;
-        Glad.createFramebuffers(1, Helpers.tempPointer(id));
+        Glad.genFramebuffers(1, Pointer.addressOf(id));
         Glad.bindFramebuffer(Glad.FRAMEBUFFER, id);
 		return new OpenGLFrameBuffer(id);
 	}
