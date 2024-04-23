@@ -1,6 +1,9 @@
 package canvas.math;
 
 @:forward abstract Rectangle(BaseRectangle) to BaseRectangle from BaseRectangle {
+	public static var ZERO(default, never):Rectangle = new Rectangle(0, 0, 0, 0);
+	public static var ONE(default, never):Rectangle = new Rectangle(0, 0, 0, 0);
+
 	public function new(x:Float = 0, y:Float = 0, width:Float = 0, height:Float = 0) {
 		this = new BaseRectangle(x, y, width, height);
 	}

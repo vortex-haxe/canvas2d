@@ -1,19 +1,19 @@
 package canvas.math;
 
 @:forward abstract Vector3i(BaseVector3i) to BaseVector3i from BaseVector3i {
-	public static var ZERO(get, never):Vector3i;
-	public static var ONE(get, never):Vector3i;
+	public static var ZERO(default, never):Vector3i = new Vector3i(0, 0, 0);
+	public static var ONE(default, never):Vector3i = new Vector3i(1, 1, 1);
 
-	public static var UP(get, never):Vector3i;
-	public static var DOWN(get, never):Vector3i;
-	public static var LEFT(get, never):Vector3i;
-	public static var RIGHT(get, never):Vector3i;
-	public static var FRONT(get, never):Vector3i;
-	public static var BACK(get, never):Vector3i;
+	public static var UP(default, never):Vector3i = new Vector3i(0, -1, 0);
+	public static var DOWN(default, never):Vector3i = new Vector3i(0, 1, 0);
+	public static var LEFT(default, never):Vector3i = new Vector3i(-1, 0, 0);
+	public static var RIGHT(default, never):Vector3i = new Vector3i(1, 0, 0);
+	public static var FRONT(default, never):Vector3i = new Vector3i(0, 0, -1);
+	public static var BACK(default, never):Vector3i = new Vector3i(0, 0, 1);
 
-	public static var AXIS_X(get, never):Vector3i;
-	public static var AXIS_Y(get, never):Vector3i;
-	public static var AXIS_Z(get, never):Vector3i;
+	public static var AXIS_X(default, never):Vector3i = new Vector3i(1, 0, 0);
+	public static var AXIS_Y(default, never):Vector3i = new Vector3i(0, 1, 0);
+	public static var AXIS_Z(default, never):Vector3i = new Vector3i(0, 0, 1);
 
 	public inline function new(x:Int = 0, y:Int = 0, z:Int = 0) {
 		this = new BaseVector3i(x, y, z);
@@ -154,59 +154,6 @@ package canvas.math;
 	@:from
 	private static inline function fromFEquivalent(a:Vector3) {
 		return new Vector3i(Math.floor(a.x), Math.floor(a.y), Math.floor(a.z));
-	}
-
-	@:noCompletion
-	private static inline function get_ZERO():Vector3i {
-		return new Vector3i(0, 0, 0);
-	}
-
-	@:noCompletion
-	private static inline function get_ONE():Vector3i {
-		return new Vector3i(1, 1, 1);
-	}
-
-	@:noCompletion
-	private static inline function get_UP():Vector3i {
-		return new Vector3i(0, -1, 0);
-	}
-
-	@:noCompletion
-	private static inline function get_DOWN():Vector3i {
-		return new Vector3i(0, 1, 0);
-	}
-
-	@:noCompletion
-	private static inline function get_LEFT():Vector3i {
-		return new Vector3i(-1, 0, 0);
-	}
-
-	@:noCompletion
-	private static inline function get_RIGHT():Vector3i {
-		return new Vector3i(1, 0, 0);
-	}
-
-	@:noCompletion
-	private static inline function get_FRONT():Vector3i {
-		return new Vector3i(0, 0, -1);
-	}
-
-	@:noCompletion
-	private static inline function get_BACK():Vector3i {
-		return new Vector3i(0, 0, 1);
-	}
-
-	@:noCompletion
-	private static inline function get_AXIS_X():Vector3i {
-		return new Vector3i(1, 0, 0);
-	}
-	@:noCompletion
-	private static inline function get_AXIS_Y():Vector3i {
-		return new Vector3i(0, 1, 0);
-	}
-	@:noCompletion
-	private static inline function get_AXIS_Z():Vector3i {
-		return new Vector3i(0, 0, 1);
 	}
 }
 

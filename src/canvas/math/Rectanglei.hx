@@ -1,6 +1,9 @@
 package canvas.math;
 
 @:forward abstract Rectanglei(BaseRectanglei) to BaseRectanglei from BaseRectanglei {
+	public static var ZERO(default, never):Rectanglei = new Rectanglei(0, 0, 0, 0);
+	public static var ONE(default, never):Rectanglei = new Rectanglei(0, 0, 0, 0);
+
 	public function new(x:Int = 0, y:Int = 0, width:Int = 0, height:Int = 0) {
 		this = new BaseRectanglei(x, y, width, height);
 	}

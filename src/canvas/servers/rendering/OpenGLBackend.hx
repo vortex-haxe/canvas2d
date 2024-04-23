@@ -264,7 +264,7 @@ class OpenGLBackend extends RenderingBackend {
         Glad.clear(Glad.COLOR_BUFFER_BIT);
         
         colorRectShader.useProgram();
-        quadRenderer.drawColor(Vector2.ZERO, _vec.set(window.initialSize.x, window.initialSize.y), RenderingServer.clearColor);
+        quadRenderer.drawColor(Vector2.ZERO, _vec.set(window.size.x, window.size.y), RenderingServer.clearColor);
     }
  
     /**

@@ -1,16 +1,16 @@
 package canvas.math;
 
 @:forward abstract Vector2(BaseVector2) to BaseVector2 from BaseVector2 {
-	public static var ZERO(default, never):Vector2i = new Vector2i(0, 0);
-	public static var ONE(default, never):Vector2i = new Vector2i(0, 0);
+	public static var ZERO(default, never):Vector2 = new Vector2(0, 0);
+	public static var ONE(default, never):Vector2 = new Vector2(0, 0);
 
-	public static var UP(default, never):Vector2i = new Vector2i(0, -1);
-	public static var DOWN(default, never):Vector2i = new Vector2i(0, 1);
-	public static var LEFT(default, never):Vector2i = new Vector2i(-1, 0);
-	public static var RIGHT(default, never):Vector2i = new Vector2i(1, 0);
+	public static var UP(default, never):Vector2 = new Vector2(0, -1);
+	public static var DOWN(default, never):Vector2 = new Vector2(0, 1);
+	public static var LEFT(default, never):Vector2 = new Vector2(-1, 0);
+	public static var RIGHT(default, never):Vector2 = new Vector2(1, 0);
 
-	public static var AXIS_X(default, never):Vector2i = new Vector2i(1, 0);
-	public static var AXIS_Y(default, never):Vector2i = new Vector2i(0, 1);
+	public static var AXIS_X(default, never):Vector2 = new Vector2(1, 0);
+	public static var AXIS_Y(default, never):Vector2 = new Vector2(0, 1);
 	
 	public inline function new(x:Float = 0, y:Float = 0) {
 		this = new BaseVector2(x, y);

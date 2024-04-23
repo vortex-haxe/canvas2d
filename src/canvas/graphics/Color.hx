@@ -171,17 +171,29 @@ abstract Color(BaseColor) from BaseColor to BaseColor {
 
 	@:from
 	private static inline function _fromInt(color:Int):Color {
-		@:privateAccess
 		return BaseColor._parseInt(color);
 	}
+
+	private static final COLOR_REGEX:EReg = ~/^(0x|#)(([A-F0-9]{2}){3,4})$/i;
 	
 	@:from
-	private static inline function _fromString(color:String):Color {
-		@:privateAccess
-		return BaseColor._parseInt(Std.parseInt("0x"+color.replace("#", "").replace("0x", "")));
-	}
+    private static inline function _fromString(color:String):Color {
+        color = color.trim();
+
+        if(!COLOR_REGEX.match(color))
+            return BLACK;
+
+        var hexColor:String = "0x" + COLOR_REGEX.matched(2);
+        var result = BaseColor._parseInt(Std.parseInt(hexColor));
+
+        if(hexColor.length == 8)
+            result.a = 1.0;
+        
+        return result;
+    }
 }
 
+@:allow(canvas.graphics.Color)
 private class BaseColor {
 	/**
 	 * The red channel of this color. Ranges from `0.0` - `1.0`.
