@@ -144,8 +144,8 @@ class TextField extends Canvas {
     private var _fontData:Font;
     private var _queueSize:Bool = true;
 
-    private var _textQuality:Int = 4;
-    private var _qualityFract:Float = 1 / 4;
+    private var _textQuality:Int = 2;
+    private var _qualityFract:Float = 1 / 2;
 
     private var _lineWidths:Array<Float> = [];
 	private var _textWidth:Float;
