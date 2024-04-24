@@ -60,7 +60,7 @@ class AudioBuffer implements IDisposable {
                 var channels:UInt32 = 0;
                 var sampleRate:UInt32 = 0;
                 var totalFrameCount:UInt64 = 0;
-                sampleData = WAV.openFileAndReadPCMFramesShort16(filePath, channels, sampleRate, cast totalFrameCount, null);
+                sampleData = WAV.openFileAndReadPCMFramesShort16(filePath, channels, sampleRate, untyped __cpp__("(drmp3_uint64){0}", totalFrameCount), null);
 
                 if(sampleData != null) {
                     aud.length = untyped __cpp__("(double)((drmp3_uint64){0} / {1})", totalFrameCount, sampleRate);
@@ -78,9 +78,9 @@ class AudioBuffer implements IDisposable {
                 var totalFrameCount:Int = Vorbis.decodeFileName(filePath, channels, sampleRate, cast sampleData);		
                 
                 if(sampleData != null) {
-                    aud.length = untyped __cpp__("(double)((drmp3_uint64){0} / {1})", cast totalFrameCount, sampleRate);
+                    aud.length = untyped __cpp__("(double)((drmp3_uint64){0} / {1})", totalFrameCount, sampleRate);
                     format = channels > 1 ? AL.FORMAT_STEREO16 : AL.FORMAT_MONO16;
-                    AudioServer.backend.sendDataToBuffer(aud.buffer, format, cast sampleData, totalFrameCount, sampleRate);
+                    AudioServer.backend.sendDataToBuffer(aud.buffer, format, cast sampleData, untyped __cpp__("(drmp3_uint64){0}", totalFrameCount), sampleRate);
                     Helpers.free(sampleData);
                 } else
                     Logs.trace('Audio file at ${filePath} failed to load: Sample data is null', ERROR);
@@ -93,12 +93,12 @@ class AudioBuffer implements IDisposable {
                 ', config);
 
                 var totalFrameCount:DrMP3UInt64 = 0;
-                sampleData = MP3.openFileAndReadPCMFramesShort16(filePath, config, cast totalFrameCount, null);
+                sampleData = MP3.openFileAndReadPCMFramesShort16(filePath, config, untyped __cpp__("(drmp3_uint64){0}", totalFrameCount), null);
         
                 if(sampleData != null) {
-                    aud.length = untyped __cpp__("(double)((drmp3_uint64){0} / {1})", cast totalFrameCount, config.ref.sampleRate);
+                    aud.length = untyped __cpp__("(double)((drmp3_uint64){0} / {1})", totalFrameCount, config.ref.sampleRate);
                     format = config.ref.channels > 1 ? AL.FORMAT_STEREO16 : AL.FORMAT_MONO16;
-                    AudioServer.backend.sendDataToBuffer(aud.buffer, format, cast sampleData, totalFrameCount, config.ref.sampleRate);
+                    AudioServer.backend.sendDataToBuffer(aud.buffer, format, cast sampleData, untyped __cpp__("(drmp3_uint64){0}", totalFrameCount), config.ref.sampleRate);
                     MP3.free(sampleData, null);
                 } else
                     Logs.trace('Audio file at ${filePath} failed to load: Sample data is null', ERROR);
