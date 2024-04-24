@@ -63,7 +63,7 @@ class AudioBuffer implements IDisposable {
                 sampleData = WAV.openFileAndReadPCMFramesShort16(filePath, channels, sampleRate, cast totalFrameCount, null);
 
                 if(sampleData != null) {
-                    aud.length = untyped __cpp__("(double)({0} / {1})", totalFrameCount, sampleRate);
+                    aud.length = untyped __cpp__("(double)((drmp3_uint64){0} / {1})", totalFrameCount, sampleRate);
                     format = channels > 1 ? AL.FORMAT_STEREO16 : AL.FORMAT_MONO16;
                     AudioServer.backend.sendDataToBuffer(aud.buffer, format, cast sampleData, totalFrameCount, sampleRate);
                 
@@ -78,7 +78,7 @@ class AudioBuffer implements IDisposable {
                 var totalFrameCount:Int = Vorbis.decodeFileName(filePath, channels, sampleRate, cast sampleData);		
                 
                 if(sampleData != null) {
-                    aud.length = untyped __cpp__("(double)({0} / {1})", cast totalFrameCount, sampleRate);
+                    aud.length = untyped __cpp__("(double)((drmp3_uint64){0} / {1})", cast totalFrameCount, sampleRate);
                     format = channels > 1 ? AL.FORMAT_STEREO16 : AL.FORMAT_MONO16;
                     AudioServer.backend.sendDataToBuffer(aud.buffer, format, cast sampleData, totalFrameCount, sampleRate);
                     Helpers.free(sampleData);
@@ -96,7 +96,7 @@ class AudioBuffer implements IDisposable {
                 sampleData = MP3.openFileAndReadPCMFramesShort16(filePath, config, cast totalFrameCount, null);
         
                 if(sampleData != null) {
-                    aud.length = untyped __cpp__("(double)({0} / {1})", totalFrameCount, config.ref.sampleRate);
+                    aud.length = untyped __cpp__("(double)((drmp3_uint64){0} / {1})", cast totalFrameCount, config.ref.sampleRate);
                     format = config.ref.channels > 1 ? AL.FORMAT_STEREO16 : AL.FORMAT_MONO16;
                     AudioServer.backend.sendDataToBuffer(aud.buffer, format, cast sampleData, totalFrameCount, config.ref.sampleRate);
                     MP3.free(sampleData, null);
