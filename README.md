@@ -16,6 +16,9 @@ Testing your project is as simple as one command:
 haxelib run canvas2d test
 ```
 
+> [!IMPORTANT]
+> Canvas2D requires Haxe 4.3+ to compile, it will not work on anything below.
+
 ## 🖥 Platforms
 Canvas2D can natively compile to the following platforms via `hxcpp`:
 
