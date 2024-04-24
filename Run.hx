@@ -126,27 +126,37 @@ _/ ___\\\\__  \\  /    \\  \\/ /\\__  \\  /  ___//  ____/ / __ |
 		if(cfg.xml.hasNode.classpath)
 			sourceFolder = cfg.xml.node.classpath.att.path;
 
-        args.push('--class-path ${sourceFolder}');
+        args.push('--class-path');
+        args.push(sourceFolder);
 
-        args.push('--library canvas2d');
-		for (lib in cfg.haxelibs)
-			args.push('--library ${lib.name}${(lib.version != null && lib.version.length != 0) ? ":" + lib.version : ""}');
+        args.push('--library');
+        args.push('canvas2d');
+
+		for (lib in cfg.haxelibs) {
+			args.push('--library');
+			args.push('${lib.name}${(lib.version != null && lib.version.length != 0) ? ":" + lib.version : ""}');
+		}
 
 		final is32bit:String = (cfg.defined.get("32") ?? cfg.defined.get("32bits") ?? "0").toLowerCase();
-        if (args.contains("-32") || args.contains("-32bits") || is32bit == "1" || is32bit == "true")
-            args.push('--define HXCPP_M32');
+        if (args.contains("-32") || args.contains("-32bits") || is32bit == "1" || is32bit == "true") {
+            args.push('--define');
+            args.push('HXCPP_M32');
+		}
 
-		args.push('--main ${cfg.meta.get("main")}');
+		args.push('--main');
+		args.push(cfg.meta.get("main"));
 
 		final buildDir:String = cfg.defined.get("BUILD_DIR") ?? "export";
 		final platform:String = Sys.systemName().toLowerCase();
-		args.push('--cpp ${buildDir}/${platform}/obj');
+		args.push('--cpp');
+		args.push('${buildDir}/${platform}/obj');
 		
 		final isDebug:String = (cfg.defined.get("debug") ?? "0").toLowerCase();
 		if(args.contains("-debug") || isDebug == "1" || isDebug == "true")
 			args.push("--debug");
 
-		args.push("--macro canvas._backend.macros.OSDefineMacro.build()");
+		args.push("--macro");
+		args.push("canvas._backend.macros.OSDefineMacro.build()");
 		
 		Sys.setCwd(curDir);
 
@@ -154,7 +164,7 @@ _/ ___\\\\__  \\  /    \\  \\/ /\\__  \\  /  ___//  ____/ / __ |
 		if(!FileSystem.exists(binFolder))
 			FileSystem.createDirectory(binFolder);
 			
-		final compileError:Int = Sys.command('haxe ${args.join(" ")}');
+		final compileError:Int = Sys.command('haxe', args);
 		if(compileError == 0) {
 			Sys.setCwd(Path.normalize(Path.join([curDir, buildDir, platform, "obj"])));
 			
