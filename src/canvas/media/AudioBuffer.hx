@@ -60,7 +60,7 @@ class AudioBuffer implements IDisposable {
                 var channels:UInt32 = 0;
                 var sampleRate:UInt32 = 0;
                 var totalFrameCount:UInt64 = 0;
-                sampleData = WAV.openFileAndReadPCMFramesShort16(filePath, channels, sampleRate, totalFrameCount, null);
+                sampleData = WAV.openFileAndReadPCMFramesShort16(filePath, channels, sampleRate, cast totalFrameCount, null);
 
                 if(sampleData != null) {
                     aud.length = untyped __cpp__("(double)({0} / {1})", totalFrameCount, sampleRate);
@@ -78,7 +78,7 @@ class AudioBuffer implements IDisposable {
                 var totalFrameCount:Int = Vorbis.decodeFileName(filePath, channels, sampleRate, cast sampleData);		
                 
                 if(sampleData != null) {
-                    aud.length = untyped __cpp__("(double)({0} / {1})", totalFrameCount, sampleRate);
+                    aud.length = untyped __cpp__("(double)({0} / {1})", cast totalFrameCount, sampleRate);
                     format = channels > 1 ? AL.FORMAT_STEREO16 : AL.FORMAT_MONO16;
                     AudioServer.backend.sendDataToBuffer(aud.buffer, format, cast sampleData, totalFrameCount, sampleRate);
                     Helpers.free(sampleData);
@@ -93,7 +93,7 @@ class AudioBuffer implements IDisposable {
                 ', config);
 
                 var totalFrameCount:DrMP3UInt64 = 0;
-                sampleData = MP3.openFileAndReadPCMFramesShort16(filePath, config, totalFrameCount, null);
+                sampleData = MP3.openFileAndReadPCMFramesShort16(filePath, config, cast totalFrameCount, null);
         
                 if(sampleData != null) {
                     aud.length = untyped __cpp__("(double)({0} / {1})", totalFrameCount, config.ref.sampleRate);
