@@ -157,8 +157,7 @@ class SDLBackend extends RenderingBackend {
 	/**
 	 * TODO: Implement this!
 	 */
-	override function createTexture(width:Int, height:Int, data:RawPointer<UInt8>, channels:Int = 4, mipmaps:Bool = true,
-			wrapping:TextureWrapping = REPEAT, filter:TextureFilter = LINEAR):ITextureData {
+	override function createTexture(width:Int, height:Int, data:RawPointer<UInt8>, format:Null<Int> = null, channels:Int = 4, mipmaps:Bool = true, wrapping:TextureWrapping = REPEAT, filter:TextureFilter = LINEAR):ITextureData {
 		// var format:PixelFormatEnum = channels == 4 ? PixelFormatEnum.RGBA32 : PixelFormatEnum.RGB24;
 		
 		// var texture:Texture = SDL.createTexture(sdlRenderer, untyped __cpp__('SDL_PIXELFORMAT_RGBA32'),
@@ -195,8 +194,7 @@ class SDLBackend extends RenderingBackend {
 		// var texture:Texture = SDL.createTextureFromSurface(sdlRenderer, surface);
 		// SDL.freeSurface(surface);
 
-		var textureData:SDLTextureData = new SDLTextureData(texture, new Vector2i(width, height), channels, mipmaps,
-				wrapping, filter);
+		var textureData:SDLTextureData = new SDLTextureData(texture, new Vector2i(width, height), channels, mipmaps, wrapping, filter);
 		return textureData;
 	}
 }

@@ -1,18 +1,9 @@
 package canvas.graphics;
 
-import canvas.servers.RenderingServer;
-import canvas.servers.RenderingServer.IShaderData;
 import sys.io.File;
 import sys.FileSystem;
 
-import cpp.Pointer;
-import cpp.Helpers;
-import cpp.UInt32;
 import cpp.ConstCharStar;
-
-import glad.Glad;
-
-import canvas.app.Application;
 
 import canvas.graphics.Color;
 
@@ -21,8 +12,11 @@ import canvas.math.Vector3;
 import canvas.math.Vector4;
 import canvas.math.Matrix4x4;
 
+import canvas.servers.RenderingServer;
+import canvas.utils.AssetCache.IDisposable;
+
 @:access(canvas.ui.Window)
-class Shader {
+class Shader implements IDisposable {
 	public static final VERTEX_PREFIX:String = "
 		#version 330 core
 		layout (location = 0) in vec4 data;

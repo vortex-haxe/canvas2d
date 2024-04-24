@@ -1,8 +1,8 @@
 package canvas;
 
-import canvas.graphics.Texture;
+import canvas.graphics.Shader;
 import canvas.math.Vector2;
-import canvas.servers.RenderingServer;
+import canvas.utils.AssetCache.IDisposable;
 
 /**
  * An updatable and drawable canvas that can
@@ -11,8 +11,7 @@ import canvas.servers.RenderingServer;
  * This class is designed to have similar functionality
  * to OpenFL's Sprite class.
  */
-@:access(canvas.graphics.Texture)
-class Canvas {
+class Canvas implements IDisposable {
     /**
      * The children of this canvas.
      */
@@ -46,6 +45,12 @@ class Canvas {
      * The layer index of this canvas according to it's parent.
      */
     public var layer(get, never):Int;
+
+    /**
+     * The shader applied to the sprite
+     * whenever it renders.
+     */
+    public var shader:Shader;
 
     /**
      * Makes a new `Canvas` instance.

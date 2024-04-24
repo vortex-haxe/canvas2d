@@ -13,8 +13,8 @@ import stb.Vorbis;
 
 import al.AL;
 
-import canvas.servers.AudioServer.IAudioBufferData;
 import canvas.servers.AudioServer;
+import canvas.utils.AssetCache.IDisposable;
 
 // TODO: Add length field and audio streaming capabilities
 
@@ -22,7 +22,7 @@ import canvas.servers.AudioServer;
  * A simple audio buffer class including
  * file path and audio data.
  */
-class AudioBuffer {
+class AudioBuffer implements IDisposable {
 	/**
 	 * The length of this audio stream in seconds.
 	 */
@@ -41,9 +41,9 @@ class AudioBuffer {
 	public function new() {}
 
     /**
-     * Returns a texture from a given file path.
+     * Returns an audio buffer from a given file path.
      * 
-     * @param  filePath  The path to the image to load.
+     * @param  filePath  The path to the audio to load.
      */
     public static function fromFile(filePath:String):AudioBuffer {
         final aud = new AudioBuffer();
@@ -107,7 +107,7 @@ class AudioBuffer {
     }
 
 	/**
-	 * Disposes of this texture and removes it's
+	 * Disposes of this audio buffer and removes it's
 	 * properties from memory.
 	 */
     public function dispose():Void {

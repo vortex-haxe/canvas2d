@@ -1,13 +1,18 @@
 package canvas.app;
 
 #if !macro
-import cpp.UInt64;
 import cpp.vm.Gc;
+import cpp.UInt64;
+import cpp.RawPointer;
 
 import canvas._backend.macros.ProjectMacro;
+import canvas._backend.bindings.Freetype;
+import canvas._backend.native.NativeAPI;
+
 import canvas.ui.Window;
 
-import canvas.graphics.Texture;
+import canvas.graphics.Font;
+import canvas.graphics.BitmapData;
 
 import canvas.servers.DisplayServer;
 import canvas.servers.RenderingServer;
@@ -15,7 +20,6 @@ import canvas.servers.AudioServer;
 
 import canvas.math.Vector2i;
 import canvas.tools.Project;
-import canvas._backend.native.NativeAPI;
 
 import sdl.SDL;
 import sdl.Types.SDLWindowPos;
@@ -24,7 +28,8 @@ import sdl.Types.SDLWindowPos;
  * The very base of your games!
  */
 @:access(canvas.ui.Window)
-@:access(canvas.graphics.Texture)
+@:access(canvas.graphics.Font)
+@:access(canvas.graphics.BitmapData)
 @:autoBuild(canvas._backend.macros.ApplicationMacro.build())
 class Application extends Canvas {
 	/**
@@ -66,6 +71,7 @@ class Application extends Canvas {
 
 		AudioServer.init();
 		RenderingServer.init();
+		Freetype.init(RawPointer.addressOf(Font._library));
 	}
 
 	public function startEventLoop() {
@@ -90,9 +96,9 @@ class Application extends Canvas {
 				if(window != null) {
 					RenderingServer.backend.clear(window);
 
-					if(Texture._currentRenderTex != null) {
-						RenderingServer.backend.useFrameBuffer(Texture._currentRenderTex._frameBuffer);
-						window.changeViewportSize(Texture._currentRenderTex.size.x, Texture._currentRenderTex.size.y);
+					if(BitmapData._currentRenderBitmap != null) {
+						RenderingServer.backend.useFrameBuffer(BitmapData._currentRenderBitmap._frameBuffer);
+						window.changeViewportSize(BitmapData._currentRenderBitmap.size.x, BitmapData._currentRenderBitmap.size.y);
 					}
 
 					window.update(_deltaTime);
@@ -100,11 +106,8 @@ class Application extends Canvas {
 					
 					RenderingServer.backend.useFrameBuffer(null);
 
-					if(Texture._currentRenderTex != null) {
+					if(BitmapData._currentRenderBitmap != null)
 						window.changeViewportSize(window.size.x, window.size.y);
-						// RenderingServer.backend.quadRenderer.texture = Texture._currentRenderTex._data;
-						// RenderingServer.backend.quadRenderer.drawTexture(Vector2.ZERO, Texture._currentRenderTex.size, Color.WHITE, new Vector4(0, 0, 1, 1), Vector2.ZERO, 0);
-					}
 					
 					RenderingServer.backend.present(window);
 				}
@@ -122,6 +125,8 @@ class Application extends Canvas {
 		
 		AudioServer.dispose();
 		RenderingServer.dispose();
+
+		Freetype.done(Font._library);
 	}
 
 	/**

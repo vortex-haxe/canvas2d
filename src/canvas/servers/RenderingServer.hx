@@ -121,9 +121,14 @@ class RenderingBackend {
 	/**
 	 * TODO: Implement this!
 	 */
-	public function createTexture(width:Int, height:Int, data:RawPointer<UInt8>, channels:Int = 4, mipmaps:Bool = true, wrapping:TextureWrapping = REPEAT, filter:TextureFilter = LINEAR):ITextureData {
+	public function createTexture(width:Int, height:Int, data:RawPointer<UInt8>, format:Null<Int> = null, channels:Int = 4, mipmaps:Bool = true, wrapping:TextureWrapping = REPEAT, filter:TextureFilter = LINEAR):ITextureData {
 		return null;
 	}
+
+	/**
+	 * TODO: Implement this!
+	 */
+	public function setTextureFilter(texture:ITextureData, filter:TextureFilter = LINEAR):Void {}
 
 	/**
 	 * TODO: Implement this!

@@ -1,0 +1,36 @@
+<xml>
+	<pragma once="true" />
+	<set name="LINK_TOOLID" value="exe"/>
+
+	<files id="haxe">
+		<compilerflag value="-I${haxelib:canvas2d}/vendor/include" />
+		<compilerflag value="-I${haxelib:canvas2d}" />
+	</files>
+
+	<files id="__main__">
+		<compilerflag value="-I${haxelib:canvas2d}/vendor/include" />
+		<compilerflag value="-I${haxelib:canvas2d}" />
+	</files>
+
+	<target id="haxe">
+		<!--64 bit-->
+		<section if="windows HXCPP_M64">
+			<lib name="${haxelib:canvas2d}/vendor/lib/Windows/x64/freetype/freetype.lib" />
+			<lib name="winmm.lib" />
+		</section>
+
+		<!--32 bit-->
+		<section if="windows HXCPP_M32">
+			<lib name="${haxelib:canvas2d}/vendor/lib/Windows/x86/freetype/freetype.lib" />
+		</section>
+
+		<!--64 bit only-->
+		<section if="macos">
+			<lib name="${haxelib:canvas2d}/vendor/lib/macOS/x64/libfreetype.a" />
+		</section>
+
+		<section if="linux || android">
+			<lib name="-lfreetype" />
+		</section>
+	</target>
+</xml>

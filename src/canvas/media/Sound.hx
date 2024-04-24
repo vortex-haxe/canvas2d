@@ -1,6 +1,7 @@
 package canvas.media;
 
 import canvas.servers.AudioServer;
+import canvas.utils.AssetCache.IDisposable;
 
 /**
  * A class built for playing sound files.
@@ -8,7 +9,7 @@ import canvas.servers.AudioServer;
  * Compatible formats are: `MP3`, `WAV`, and `OGG`.
  */
 @:access(canvas.media.AudioBuffer)
-class Sound {
+class Sound implements IDisposable {
     /**
 	 * The current time of the audio in seconds.
 	 */

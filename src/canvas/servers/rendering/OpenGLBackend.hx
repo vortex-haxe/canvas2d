@@ -323,12 +323,14 @@ class OpenGLBackend extends RenderingBackend {
     /**
      * TODO: Implement this!
      */
-    override function createTexture(width:Int, height:Int, data:RawPointer<UInt8>, channels:Int = 4, mipmaps:Bool = true, wrapping:TextureWrapping = REPEAT, filter:TextureFilter = LINEAR):ITextureData {
+    override function createTexture(width:Int, height:Int, data:RawPointer<UInt8>, format:Null<Int> = null, channels:Int = 4, mipmaps:Bool = true, wrapping:TextureWrapping = REPEAT, filter:TextureFilter = LINEAR):ITextureData {
+        Glad.pixelStorei(Glad.UNPACK_ALIGNMENT, 1);
+        
         var id:UInt32 = 0;
         Glad.genTextures(1, Pointer.addressOf(id));
         Glad.bindTexture(Glad.TEXTURE_2D, id);
 
-        var format:Int = (channels == 4) ? Glad.RGBA : Glad.RGB;
+        var format:Int = (format != null) ? format : ((channels == 4) ? Glad.RGBA : Glad.RGB);
         Glad.texImage2D(Glad.TEXTURE_2D, 0, format, width, height, 0, format, Glad.UNSIGNED_BYTE, data);
 
         if(mipmaps)
@@ -341,6 +343,15 @@ class OpenGLBackend extends RenderingBackend {
 
         var textureData:OpenGLTextureData = new OpenGLTextureData(id, new Vector2i(width, height), channels, mipmaps, wrapping, filter);
         return textureData;
+    }
+
+    /**
+	 * TODO: Implement this!
+	 */
+	override function setTextureFilter(texture:ITextureData, filter:TextureFilter = LINEAR):Void {
+        Glad.bindTexture(Glad.TEXTURE_2D, texture.texture);
+        Glad.texParameteri(Glad.TEXTURE_2D, Glad.TEXTURE_MIN_FILTER, _getOpenGLFilter(filter));
+        Glad.texParameteri(Glad.TEXTURE_2D, Glad.TEXTURE_MAG_FILTER, _getOpenGLFilter(filter));        
     }
 
     /**
