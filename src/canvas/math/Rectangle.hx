@@ -246,6 +246,10 @@ class BaseRectangle {
 		return this;
 	}
 
+	public function toString():String {
+        return '(${x}, ${y}, ${width}, ${height})';
+    }
+
 	// ##==-- Privates --==## //
 	private var _onChange:(x:Float, y:Float, width:Float, height:Float) -> Void;
 

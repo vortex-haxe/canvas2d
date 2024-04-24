@@ -277,6 +277,10 @@ class BaseRectanglei {
 		return this;
 	}
 
+	public function toString():String {
+        return '(${x}, ${y}, ${width}, ${height})';
+    }
+
 	// ##==-- Privates --==## //
 	private var _onChange:(x:Int, y:Int, width:Int, height:Int) -> Void;
 

@@ -32,8 +32,11 @@ class Texture {
 
     /**
      * The width and height of the texture in pixels.
+     * 
+     * Access the width via `size.x`, and the
+     * height via `size.y`.
      */
-    public var size(default, null):Vector2i = Vector2i.ZERO;
+    public var size(default, null):Vector2i = new Vector2i();
 
     /**
      * The amount of channels in this texture.
@@ -67,12 +70,12 @@ class Texture {
         switch(type) {
             case RENDER:
                 size.set(width, height);
-                numChannels = 3;
+                numChannels = 4;
                 
                 _frameBuffer = RenderingServer.backend.createFrameBuffer();
 
-                final _tex = RenderingServer.backend.createTexture(width, height, null, 3);
-                RenderingServer.backend.setupFrameBuffer(_frameBuffer, _tex);
+                _data = RenderingServer.backend.createTexture(width, height, null, 4);
+                RenderingServer.backend.setupFrameBuffer(_frameBuffer, _data);
 
             default:
                 size.set(width, height);
@@ -108,6 +111,7 @@ class Texture {
         final tex = new Texture();
         tex.filePath = filePath;
         
+        Image.setFlipVerticallyOnLoad(1);
         var pixels:Star<UInt8> = Image.load(filePath, Pointer.addressOf(tex.size.x), Pointer.addressOf(tex.size.y), Pointer.addressOf(tex.numChannels), 0);
         
         if (pixels != 0)
@@ -130,6 +134,7 @@ class Texture {
         if(type == RENDER) {
             RenderingServer.backend.useFrameBuffer(null);
             RenderingServer.backend.disposeFrameBuffer(_frameBuffer);
+            _currentRenderTex = null;
         }
     }
 
@@ -143,7 +148,6 @@ class Texture {
             return;
         }
         _currentRenderTex = this;
-        RenderingServer.backend.useFrameBuffer(_frameBuffer);
     }
 
     /**
@@ -160,7 +164,6 @@ class Texture {
             return;
         }
         _currentRenderTex = null;
-        RenderingServer.backend.useFrameBuffer(null);
     }
 
     // [ Private API ] //

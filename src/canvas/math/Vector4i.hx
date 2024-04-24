@@ -307,6 +307,10 @@ class BaseVector4i {
 		return this;
 	}
 
+	public function toString():String {
+        return '(${x}, ${y}, ${z}, ${w})';
+    }
+
 	// ##==-- Privates --==## //
 	private var _onChange:(x:Int, y:Int, z:Int, w:Int) -> Void;
 

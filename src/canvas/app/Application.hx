@@ -80,7 +80,7 @@ class Application extends Canvas {
 
 			_deltaTime = untyped __cpp__("(double)({0} - {1}) / (double){2}", curTime, oldTime, SDL.getPerformanceFrequency());
 			update(_deltaTime);
-			_safeDraw();
+			draw();
 
 			if(windows.length != 0)
 				windows[0].children = children;
@@ -90,13 +90,22 @@ class Application extends Canvas {
 				if(window != null) {
 					RenderingServer.backend.clear(window);
 
-					if(Texture._currentRenderTex != null)
+					if(Texture._currentRenderTex != null) {
 						RenderingServer.backend.useFrameBuffer(Texture._currentRenderTex._frameBuffer);
+						window.changeViewportSize(Texture._currentRenderTex.size.x, Texture._currentRenderTex.size.y);
+					}
 
 					window.update(_deltaTime);
-					window._safeDraw();
+					window.draw();
 					
 					RenderingServer.backend.useFrameBuffer(null);
+
+					if(Texture._currentRenderTex != null) {
+						window.changeViewportSize(window.size.x, window.size.y);
+						// RenderingServer.backend.quadRenderer.texture = Texture._currentRenderTex._data;
+						// RenderingServer.backend.quadRenderer.drawTexture(Vector2.ZERO, Texture._currentRenderTex.size, Color.WHITE, new Vector4(0, 0, 1, 1), Vector2.ZERO, 0);
+					}
+					
 					RenderingServer.backend.present(window);
 				}
 			}

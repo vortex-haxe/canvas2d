@@ -2,7 +2,7 @@ package canvas.math;
 
 @:forward abstract Vector2i(BaseVector2i) to BaseVector2i from BaseVector2i {
 	public static var ZERO(default, never):Vector2i = new Vector2i(0, 0);
-	public static var ONE(default, never):Vector2i = new Vector2i(0, 0);
+	public static var ONE(default, never):Vector2i = new Vector2i(1, 1);
 
 	public static var UP(default, never):Vector2i = new Vector2i(0, -1);
 	public static var DOWN(default, never):Vector2i = new Vector2i(0, 1);
@@ -264,6 +264,10 @@ class BaseVector2i {
 		y = vec.y;
 		return this;
 	}
+
+	public function toString():String {
+        return '(${x}, ${y})';
+    }
 
 	// ##==-- Privates --==## //
 	private var _onChange:(x:Int, y:Int) -> Void;

@@ -276,6 +276,10 @@ class BaseVector4 {
 		return this;
 	}
 
+	public function toString():String {
+        return '(${x}, ${y}, ${z}, ${w})';
+    }
+
 	// ##==-- Privates --==## //
 	private var _onChange:(x:Float, y:Float, z:Float, w:Float) -> Void;
 
@@ -306,8 +310,4 @@ class BaseVector4 {
 			_onChange(x, y, z, value);
 		return w = value;
 	}
-
-    public function toString():String {
-        return '(${x}, ${y}, ${z}, ${w})';
-    }
 }

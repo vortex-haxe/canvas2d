@@ -250,6 +250,10 @@ class BaseVector3 {
 		return this;
 	}
 
+	public function toString():String {
+        return '(${x}, ${y}, ${z})';
+    }
+
 	// ##==-- Privates --==## //
 	private var _onChange:(x:Float, y:Float, z:Float) -> Void;
 

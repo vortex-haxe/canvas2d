@@ -40,21 +40,12 @@ class Canvas {
      * `1` being the default value.
      */
     @:isVar
-    public var scale(default, set):Vector2 = new Vector2(1, 1);
+    public var scale(default, set):Vector2 = new Vector2().copyFrom(Vector2.ONE);
 
     /**
      * The layer index of this canvas according to it's parent.
      */
     public var layer(get, never):Int;
-
-    /**
-     * Whether or not this canvas object can be
-     * captured onto a render texture.
-     * 
-     * This applies to all of the children of
-     * this canvas aswell.
-     */
-    public var capturable:Bool = true;
 
     /**
      * Makes a new `Canvas` instance.
@@ -149,16 +140,6 @@ class Canvas {
     // --------------- //
     // [ Private API ] //
     // --------------- //
-
-    private function _safeDraw():Void {
-        if(!capturable)
-            RenderingServer.backend.useFrameBuffer(null);
-
-        draw();
-
-        if(!capturable && Texture._currentRenderTex != null)
-            RenderingServer.backend.useFrameBuffer(Texture._currentRenderTex._frameBuffer);
-    }
 
     @:noCompletion
     private function get_layer():Int {

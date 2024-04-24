@@ -61,10 +61,10 @@ class OpenGLShaderData implements IShaderData {
 class OpenGLQuadRenderer implements IQuadRenderer {
     public final VERTICES:Array<Float32> = [
         // positions   // texture coords
-        0.0,  0.0,     0.0, 0.0,   // top left
-        0.0,  1.0,     0.0, 1.0,   // bottom left
-        1.0,  1.0,     1.0, 1.0,   // bottom right
-        1.0,  0.0,     1.0, 0.0    // top right 
+        0.0,   1.0,    0.0,  0.0,    // top left
+        0.0,   0.0,    0.0,  1.0,    // bottom left
+        1.0,   0.0,    1.0,  1.0,    // bottom right
+        1.0,   1.0,    1.0,  0.0     // top right 
     ];
 
     public final INDICES:Array<UInt32> = [

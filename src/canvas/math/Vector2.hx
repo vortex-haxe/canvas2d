@@ -2,7 +2,7 @@ package canvas.math;
 
 @:forward abstract Vector2(BaseVector2) to BaseVector2 from BaseVector2 {
 	public static var ZERO(default, never):Vector2 = new Vector2(0, 0);
-	public static var ONE(default, never):Vector2 = new Vector2(0, 0);
+	public static var ONE(default, never):Vector2 = new Vector2(1, 1);
 
 	public static var UP(default, never):Vector2 = new Vector2(0, -1);
 	public static var DOWN(default, never):Vector2 = new Vector2(0, 1);
