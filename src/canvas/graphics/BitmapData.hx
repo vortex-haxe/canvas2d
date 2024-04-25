@@ -1,17 +1,13 @@
 package canvas.graphics;
 
-import cpp.Star;
-import cpp.UInt8;
 import cpp.Pointer;
-import cpp.RawPointer;
-import cpp.Helpers;
-
 import stb.Image;
 
 import canvas.servers.RenderingServer;
 import canvas.servers.RenderingServer.ITextureData;
 
 import canvas.math.Vector2i;
+import canvas.utils.UInt8Array;
 import canvas.utils.AssetCache.IDisposable;
 
 enum abstract BitmapType(Int) from Int to Int {
@@ -82,8 +78,7 @@ class BitmapData implements IDisposable {
                 size.set(width, height);
                 numChannels = 4;
 
-                var pixels:RawPointer<UInt8> = Helpers.malloc(4 * height * width, UInt8);
-
+                var pixels:UInt8Array = new UInt8Array(4 * height * width);
                 var r:UInt8 = cast Std.int(color.r * 255);
                 var g:UInt8 = cast Std.int(color.g * 255);
                 var b:UInt8 = cast Std.int(color.b * 255);
@@ -99,7 +94,6 @@ class BitmapData implements IDisposable {
                     }
                 }
                 _data = RenderingServer.backend.createTexture(width, height, pixels, null, 4, false, REPEAT, NEAREST);
-                Helpers.free(pixels);
         }
     }
 
