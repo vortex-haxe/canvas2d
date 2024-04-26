@@ -15,6 +15,7 @@ import canvas.app.Application;
 import canvas.servers.DisplayServer.DisplayBackend;
 import canvas.servers.DisplayServer.IWindowData;
 import canvas.math.Vector2i;
+import canvas.utils.IntBool;
 
 // this was going to be a typedef but you can't do that cuz weird hxcpp stuff :(
 class SDLGLWindowData implements IWindowData {
@@ -42,7 +43,7 @@ class SDLGLBackend extends DisplayBackend {
     /**
      * Creates a window with SDL and initializes an OpenGL Core 3.3 context with it.
      */
-    override function createWindow(title:String, position:Vector2i, size:Vector2i):IWindowData {
+    override function createWindow(title:String, position:Vector2i, size:Vector2i, vsync:IntBool):IWindowData {
 		var wFlags:SDLWindowInitFlags = OPENGL;
 
 		final resizable:String = (Application.current._conf.window.get("resizable") ?? "0").toLowerCase();
@@ -58,7 +59,7 @@ class SDLGLBackend extends DisplayBackend {
 		var returnData:SDLGLWindowData = new SDLGLWindowData(nativeWindow, glContext);
 		
 		SDL.glMakeCurrent(nativeWindow, glContext);
-		SDL.glSetSwapInterval(0);
+		SDL.glSetSwapInterval(vsync);
 
 		Glad.loadGLLoader(untyped __cpp__("SDL_GL_GetProcAddress"));
 
@@ -92,6 +93,14 @@ class SDLGLBackend extends DisplayBackend {
 	 */
 	override function setWindowSize(window:IWindowData, size:Vector2i):Void {
 		SDL.setWindowSize(window.window, size.x, size.y);
+	}
+
+	/**
+	 * Toggles V-Sync on the given window.
+	 */
+	override function toggleVSync(window:IWindowData, enabled:IntBool):Void {
+		SDL.glMakeCurrent(window.window, window.context);
+		SDL.glSetSwapInterval(enabled);
 	}
 
 	/**

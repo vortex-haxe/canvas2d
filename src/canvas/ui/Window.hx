@@ -50,6 +50,14 @@ class Window extends Canvas {
 	public var frameRate:Int = 0;
 
 	/**
+	 * Controls whether or not this window will
+	 * update and draw according to the monitor's refresh rate.
+	 * 
+	 * NOTE: Overrides the `frameRate` property.
+	 */
+	public var vsync(default, set):Bool = false;
+
+	/**
 	 * The signal that gets emitted when the window updates.
 	 */
 	public var onUpdate:Event<Float->Void> = new Event<Float->Void>();
@@ -148,12 +156,14 @@ class Window extends Canvas {
 	/**
 	 * Makes a new `Window`.
 	 */
-	public function new(title:String, position:Vector2i, size:Vector2i) {
+	public function new(title:String, position:Vector2i, size:Vector2i, vsync:Bool) {
 		super();
 		@:bypassAccessor this.position = position;
 		@:bypassAccessor this.size = size;
+		@:bypassAccessor this.vsync = vsync;
+
 		initialSize = new Vector2i().copyFrom(size);
-		_nativeWindow = DisplayServer.backend.createWindow(title, position, size);
+		_nativeWindow = DisplayServer.backend.createWindow(title, position, size, vsync);
 
 		@:privateAccess {
 			this.position._onChange = (x:Int, y:Int) -> {
@@ -274,4 +284,10 @@ class Window extends Canvas {
 	private static var _recti:Rectanglei = new Rectanglei();
 
 	private var _nativeWindow:IWindowData;
+
+	@:noCompletion
+	private function set_vsync(newValue:Bool):Bool {
+		DisplayServer.backend.toggleVSync(_nativeWindow, newValue);
+		return vsync = newValue;
+	}
 }

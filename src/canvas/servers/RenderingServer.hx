@@ -2,7 +2,6 @@ package canvas.servers;
 
 import cpp.RawPointer;
 import cpp.UInt8;
-import cpp.Star;
 import cpp.ConstCharStar;
 
 import canvas.math.*;

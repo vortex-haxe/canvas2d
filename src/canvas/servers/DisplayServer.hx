@@ -2,6 +2,7 @@ package canvas.servers;
 
 import canvas.servers.display.SDLGLBackend;
 import canvas.math.Vector2i;
+import canvas.utils.IntBool;
 
 interface IWindowData {
     public var window:Any;
@@ -23,7 +24,7 @@ class DisplayBackend {
 	 * @param  position  The position of the new window.
 	 * @param  size      The size of the new window.
      */
-    public function createWindow(title:String, position:Vector2i, size:Vector2i):IWindowData {
+    public function createWindow(title:String, position:Vector2i, size:Vector2i, vsync:IntBool):IWindowData {
         return null;
     }
 
@@ -50,6 +51,11 @@ class DisplayBackend {
 	 * within a given `Vector2i`.
 	 */
 	public function setWindowSize(window:IWindowData, size:Vector2i):Void {}
+
+	/**
+	 * Toggles V-Sync on the given window.
+	 */
+	public function toggleVSync(window:IWindowData, enabled:IntBool):Void {}
 
     /**
 	 * Disposes of any given window data and

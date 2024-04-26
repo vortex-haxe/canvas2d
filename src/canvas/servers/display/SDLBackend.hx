@@ -12,6 +12,7 @@ import canvas.app.Application;
 import canvas.servers.DisplayServer.DisplayBackend;
 import canvas.servers.DisplayServer.IWindowData;
 import canvas.math.Vector2i;
+import canvas.utils.IntBool;
 
 // this was going to be a typedef but you can't do that cuz weird hxcpp stuff :(
 class SDLWindowData implements IWindowData {
@@ -39,7 +40,7 @@ class SDLBackend extends DisplayBackend {
     /**
      * Creates a window and context with SDL.
      */
-    override function createWindow(title:String, position:Vector2i, size:Vector2i):IWindowData {
+    override function createWindow(title:String, position:Vector2i, size:Vector2i, vsync:IntBool):IWindowData {
 		var wFlags:SDLWindowInitFlags = SHOWN;
 
 		final resizable:String = (Application.current._conf.window.get("resizable") ?? "0").toLowerCase();
@@ -58,6 +59,9 @@ class SDLBackend extends DisplayBackend {
 			Logs.trace("SDL_CreateRenderer couldn't find accelerated graphics, Falling back to software rendering.", WARNING);
 			sdlRenderer = SDL.createRenderer(nativeWindow, -1, SOFTWARE);
 		}
+		if(vsync && sdlRenderer != null)
+			SDL.renderSetVSync(sdlRenderer, vsync);
+
 		return new SDLWindowData(nativeWindow, sdlRenderer);
 	}
 
@@ -88,6 +92,13 @@ class SDLBackend extends DisplayBackend {
 	 */
 	override function setWindowSize(window:IWindowData, size:Vector2i):Void {
 		SDL.setWindowSize(window.window, size.x, size.y);
+	}
+
+	/**
+	 * Toggles V-Sync on the given window.
+	 */
+	override function toggleVSync(window:IWindowData, enabled:IntBool):Void {
+		SDL.renderSetVSync(window.context, enabled);
 	}
 
 	/**

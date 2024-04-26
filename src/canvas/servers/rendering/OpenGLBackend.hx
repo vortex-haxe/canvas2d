@@ -28,6 +28,7 @@ import canvas.math.Matrix4x4;
 import canvas.graphics.Shader;
 import canvas.graphics.Color;
 
+import canvas.utils.IntBool;
 import canvas.servers.RenderingServer;
 
 class OpenGLTextureData implements ITextureData {

@@ -68,7 +68,15 @@ class Application extends Canvas {
 
 		DisplayServer.init();
 
-		window = new Window(meta.get("title"), new Vector2i(SDLWindowPos.CENTERED, SDLWindowPos.CENTERED), new Vector2i(Std.parseInt(_conf.window.get("width")), Std.parseInt(_conf.window.get("height"))));
+		window = new Window(
+			meta.get("title") ?? "Canvas2D App", 
+			new Vector2i(SDLWindowPos.CENTERED, SDLWindowPos.CENTERED),
+			new Vector2i(
+				Std.parseInt(_conf.window.get("width")),
+				Std.parseInt(_conf.window.get("height"))
+			),
+			(_conf.window.get("vsync") ?? "false").toLowerCase() == "true"
+		);
 		window.frameRate = Std.parseInt(_conf.window.get("fps")) ?? 0;
 
 		AudioServer.init();
@@ -86,44 +94,47 @@ class Application extends Canvas {
 			oldTime = curTime;
 			curTime = SDL.getPerformanceCounter();
 
-			_deltaTime = untyped __cpp__("(double)({0} - {1}) / (double){2}", curTime, oldTime, SDL.getPerformanceFrequency());
-			update(_deltaTime);
-			draw();
-
-			if(windows.length != 0)
-				windows[0].children = children;
-
-			for(i in 0...windows.length) {
-				final window:Window = windows[i];
-				if(window != null) {
-					RenderingServer.backend.clear(window);
-
-					if(BitmapData._currentRenderBitmap != null) {
-						RenderingServer.backend.useFrameBuffer(BitmapData._currentRenderBitmap._frameBuffer);
-						window.changeViewportSize(BitmapData._currentRenderBitmap.size.x, BitmapData._currentRenderBitmap.size.y);
+			_deltaTime += untyped __cpp__("(double)({0} - {1}) / (double){2}", curTime, oldTime, SDL.getPerformanceFrequency());
+			final fpsFract:Float = 1 / window.frameRate;
+			
+			if(_deltaTime >= fpsFract) {
+				update(_deltaTime);
+				draw();
+	
+				if(windows.length != 0)
+					windows[0].children = children;
+	
+				for(i in 0...windows.length) {
+					final window:Window = windows[i];
+					if(window != null) {
+						RenderingServer.backend.clear(window);
+	
+						if(BitmapData._currentRenderBitmap != null) {
+							RenderingServer.backend.useFrameBuffer(BitmapData._currentRenderBitmap._frameBuffer);
+							window.changeViewportSize(BitmapData._currentRenderBitmap.size.x, BitmapData._currentRenderBitmap.size.y);
+						}
+	
+						window.update(_deltaTime);
+						window.draw();
+						
+						RenderingServer.backend.useFrameBuffer(null);
+	
+						if(BitmapData._currentRenderBitmap != null)
+							window.changeViewportSize(window.size.x, window.size.y);
+						
+						RenderingServer.backend.present(window);
 					}
-
-					window.update(_deltaTime);
-					window.draw();
-					
-					RenderingServer.backend.useFrameBuffer(null);
-
-					if(BitmapData._currentRenderBitmap != null)
-						window.changeViewportSize(window.size.x, window.size.y);
-					
-					RenderingServer.backend.present(window);
 				}
-			}
-			// Make the application match the main window framerate
-			if(window.frameRate > 0)
-				SDL.delay(Std.int(1.0 / window.frameRate) * 1000);
+	
+				// Force gc to clean up unused memory whenever it can
+				// Hacky workaround for OpenGLBackend leaking memory when clearing the display
+				// I don't know the cause but this seems to fix it
+				// I'll see if it causes issues later on
+				Gc.run(true);
+				Gc.run(false);
 
-			// Force gc to clean up unused memory whenever it can
-			// Hacky workaround for OpenGLBackend leaking memory when clearing the display
-			// I don't know the cause but this seems to fix it
-			// I'll see if it causes issues later on
-			Gc.run(true);
-			Gc.run(false);
+				_deltaTime %= fpsFract;
+			}
 		}
 		
 		window.dispose();
