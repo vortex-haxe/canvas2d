@@ -1,5 +1,6 @@
 package canvas;
 
+import canvas.app.Event;
 import canvas.graphics.Shader;
 import canvas.math.Vector2;
 import canvas.utils.AssetCache.IDisposable;
@@ -47,10 +48,38 @@ class Canvas implements IDisposable {
     public var layer(get, never):Int;
 
     /**
+     * The opacity of this canvas object along with
+     * it's children from a `0` to `1` range.
+     * 
+     * NOTE: Invisible canvas objects will still update!
+     */
+    public var alpha:Float = 1;
+
+    /**
+     * Controls whether or not this canvas object
+     * and it's children can draw onto the screen.
+     * 
+     * NOTE: Invisible canvas objects will still update!
+     */
+    public var visible:Bool = true;
+
+    /**
      * The shader applied to the sprite
      * whenever it renders.
      */
     public var shader:Shader;
+
+    /**
+     * The event that gets dispatched when this
+     * child canvas gets added to it's parent.
+     */
+    public var addedToParent:Event<Canvas->Void> = new Event<Canvas->Void>();
+
+    /**
+     * The event that gets dispatched when this
+     * child canvas gets removed from it's parent.
+     */
+    public var removedFromParent:Event<Void->Void> = new Event<Void->Void>();
 
     /**
      * Makes a new `Canvas` instance.
@@ -67,6 +96,7 @@ class Canvas implements IDisposable {
         }
         canvas.parent = this;
         children.push(canvas);
+        canvas.addedToParent.dispatch(this);
     }
 
     /**
@@ -79,6 +109,7 @@ class Canvas implements IDisposable {
         }
         canvas.parent = this;
         children.insert(layer, canvas);
+        canvas.addedToParent.dispatch(this);
     }
 
     /**
@@ -91,6 +122,7 @@ class Canvas implements IDisposable {
         }
         canvas.parent = null;
         children.remove(canvas);
+        canvas.removedFromParent.dispatch();
     }
 
     /**
@@ -126,6 +158,9 @@ class Canvas implements IDisposable {
      * that the children of this canvas update aswell!
      */
     public function draw():Void {
+        if(alpha == 0 || !visible)
+            return;
+
         for(i in 0...children.length) {
             final child:Canvas = children[i];
             if(child != null)

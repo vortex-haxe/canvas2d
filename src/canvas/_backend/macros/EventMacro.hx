@@ -96,13 +96,18 @@ class EventMacro {
 				else
 					i++;
 			}
-
+			
+			var meta:Array<MetadataEntry> = [
+				{name: ":dox", params: [macro hide], pos: pos},
+				{name: ":noCompletion", pos: pos}
+			];
 			fields.push({
 				name: "__listeners",
 				access: [APublic],
                 doc: doc.get("__listeners"),
 				kind: FVar(TPath({pack: [], name: "Array", params: [TPType(typeParam.toComplexType())]})),
-				pos: pos
+				pos: pos,
+				meta: meta
 			});
 			fields.push({
 				name: "dispatch",
@@ -116,11 +121,6 @@ class EventMacro {
 				}),
 				pos: pos
 			});
-
-			var meta:Array<MetadataEntry> = [
-				{name: ":dox", params: [macro hide], pos: pos},
-				{name: ":noCompletion", pos: pos}
-			];
 
 			Context.defineType({
 				pos: pos,
