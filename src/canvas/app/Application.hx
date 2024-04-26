@@ -94,11 +94,12 @@ class Application extends Canvas {
 			oldTime = curTime;
 			curTime = SDL.getPerformanceCounter();
 
-			_deltaTime += untyped __cpp__("(double)({0} - {1}) / (double){2}", curTime, oldTime, SDL.getPerformanceFrequency());
-			final fpsFract:Float = 1 / window.frameRate;
+			final _dt:Float = untyped __cpp__("(double)({0} - {1}) / (double){2}", curTime, oldTime, SDL.getPerformanceFrequency());
+			_deltaTime += _dt;
+			update(_dt);
 			
+			final fpsFract:Float = 1 / window.frameRate;
 			if(_deltaTime >= fpsFract) {
-				update(_deltaTime);
 				draw();
 	
 				if(windows.length != 0)
