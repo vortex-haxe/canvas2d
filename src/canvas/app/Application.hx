@@ -67,7 +67,9 @@ class Application extends Canvas {
 		Logs.init();
 
 		DisplayServer.init();
+
 		window = new Window(meta.get("title"), new Vector2i(SDLWindowPos.CENTERED, SDLWindowPos.CENTERED), new Vector2i(Std.parseInt(_conf.window.get("width")), Std.parseInt(_conf.window.get("height"))));
+		window.frameRate = Std.parseInt(_conf.window.get("fps")) ?? 0;
 
 		AudioServer.init();
 		RenderingServer.init();
@@ -113,7 +115,7 @@ class Application extends Canvas {
 				}
 			}
 			// Make the application match the main window framerate
-			if(window.frameRate != 0)
+			if(window.frameRate > 0)
 				SDL.delay(Std.int(1.0 / window.frameRate) * 1000);
 
 			// Force gc to clean up unused memory whenever it can
