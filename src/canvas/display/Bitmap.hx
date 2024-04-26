@@ -1,5 +1,6 @@
 package canvas.display;
 
+import canvas.math.Rectangle;
 import canvas.app.Application;
 
 import canvas.graphics.Color;
@@ -21,6 +22,15 @@ class Bitmap extends Canvas {
      * The currently rendering bitmap data.
      */
     public var bitmapData:BitmapData;
+
+    /**
+     * The scroll rectangle bounds of the canvas object.
+     * 
+     * The canvas object is cropped to the size defined by the rectangle,
+     * and it scrolls within the rectangle when you change the x and y
+     * properties of the `scrollRect` object.
+     */
+    public var scrollRect(default, set):Rectangle;
 
     /**
      * The color tint applied to this sprite
@@ -62,8 +72,14 @@ class Bitmap extends Canvas {
             final shader:Shader = this.shader ?? RenderingServer.backend.defaultShader;
             shader.useProgram();
 
+            _scrollRectUV.set(
+                scrollRect.x / bitmapData.size.x,
+                scrollRect.y / bitmapData.size.y,
+                scrollRect.width / bitmapData.size.x,
+                scrollRect.height / bitmapData.size.y,
+            );
             RenderingServer.backend.quadRenderer.texture = bitmapData._data;
-            RenderingServer.backend.quadRenderer.drawTexture(_pos.set(x, y), _size.set(bitmapData.size.x * scale.x, bitmapData.size.y * scale.y), tint, _clipRectUVCoords, Vector2.ZERO, 0);
+            RenderingServer.backend.quadRenderer.drawTexture(_pos.set(x, y), _size.set(bitmapData.size.x * scale.x, bitmapData.size.y * scale.y), tint, _scrollRectUV, Vector2.ZERO, 0);
         
             if(bitmapData.type == RENDER) {
                 RenderingServer.backend.useFrameBuffer(bitmapData._frameBuffer);
@@ -78,6 +94,7 @@ class Bitmap extends Canvas {
      * all of it's properties.
      */
     override function dispose() {
+        scrollRect = null;
         bitmapData = null;
         shader = null;
         @:bypassAccessor tint = null;
@@ -92,7 +109,17 @@ class Bitmap extends Canvas {
 
 	private var _pos:Vector2 = new Vector2(0.0, 0.0);
 	private var _size:Vector2 = new Vector2(0.0, 0.0);
-	private var _clipRectUVCoords:Vector4 = new Vector4(0.0, 0.0, 1.0, 1.0);
+	private var _scrollRectUV:Vector4 = new Vector4(0.0, 0.0, 1.0, 1.0);
+
+    @:noCompletion
+    private function set_scrollRect(newRect:Rectangle):Rectangle {
+        if(scrollRect == null)
+            scrollRect = new Rectangle();
+
+        scrollRect.copyFrom(newRect);
+        newRect = null;
+        return scrollRect;
+    }
 
     @:noCompletion
     private function set_tint(newTint:Color):Color {
