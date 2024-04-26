@@ -112,6 +112,10 @@ class Application extends Canvas {
 					RenderingServer.backend.present(window);
 				}
 			}
+			// Make the application match the main window framerate
+			if(window.frameRate != 0)
+				SDL.delay(Std.int(1.0 / window.frameRate) * 1000);
+
 			// Force gc to clean up unused memory whenever it can
 			// Hacky workaround for OpenGLBackend leaking memory when clearing the display
 			// I don't know the cause but this seems to fix it

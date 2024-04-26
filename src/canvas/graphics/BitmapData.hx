@@ -70,8 +70,8 @@ class BitmapData implements IDisposable {
                 numChannels = 4;
                 
                 _frameBuffer = RenderingServer.backend.createFrameBuffer();
-
                 _data = RenderingServer.backend.createTexture(width, height, null, null, 4);
+                
                 RenderingServer.backend.setupFrameBuffer(_frameBuffer, _data);
 
             default:

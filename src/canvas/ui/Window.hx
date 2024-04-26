@@ -43,6 +43,13 @@ class Window extends Canvas {
 	public var initialSize(default, null):Vector2i;
 
 	/**
+	 * The maximum framerate cap of this window.
+	 * 
+	 * If set to `0`, there will be no limit.
+	 */
+	public var frameRate:Int = 0;
+
+	/**
 	 * The signal that gets emitted when the window updates.
 	 */
 	public var onUpdate:Event<Float->Void> = new Event<Float->Void>();
