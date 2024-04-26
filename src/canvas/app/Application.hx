@@ -93,18 +93,15 @@ class Application extends Canvas {
 		while(windows.length != 0) {
 			oldTime = curTime;
 			curTime = SDL.getPerformanceCounter();
+			
+			if(windows.length != 0)
+				windows[0].children = children;
 
 			final _dt:Float = untyped __cpp__("(double)({0} - {1}) / (double){2}", curTime, oldTime, SDL.getPerformanceFrequency());
 			_deltaTime += _dt;
-			update(_dt);
 			
-			final fpsFract:Float = 1 / window.frameRate;
-			if(_deltaTime >= fpsFract) {
-				draw();
-	
-				if(windows.length != 0)
-					windows[0].children = children;
-	
+			final fpsFract:Float = (!window.vsync && window.frameRate > 0) ? (1 / window.frameRate) : 0;
+			if(fpsFract == 0 || _deltaTime >= fpsFract) {
 				for(i in 0...windows.length) {
 					final window:Window = windows[i];
 					if(window != null) {
@@ -114,7 +111,6 @@ class Application extends Canvas {
 							RenderingServer.backend.useFrameBuffer(BitmapData._currentRenderBitmap._frameBuffer);
 							window.changeViewportSize(BitmapData._currentRenderBitmap.size.x, BitmapData._currentRenderBitmap.size.y);
 						}
-	
 						window.update(_deltaTime);
 						window.draw();
 						
