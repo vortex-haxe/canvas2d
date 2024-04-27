@@ -193,8 +193,10 @@ abstract Color(BaseColor) from BaseColor to BaseColor {
     }
 }
 
+@:noDoc
+@:noCompletion
 @:allow(canvas.graphics.Color)
-private class BaseColor {
+class BaseColor {
 	/**
 	 * The red channel of this color. Ranges from `0.0` - `1.0`.
 	 */
@@ -257,10 +259,9 @@ private class BaseColor {
 		return '[ Color | R: ${r}, G: ${g}, B: ${b}, A: ${a} ]';
 	}
 
-	// ##==-------------------------------------------------==## //
-	// ##==----- Don't modify these parts below unless -----==## //
-	// ##==-- you are here to fix a bug or add a feature. --==## //
-	// ##==-------------------------------------------------==## //
+	// --------------- //
+	// [ Private API ] //
+	// --------------- //
 
 	@:noCompletion
 	private static inline function _parseInt(integer:Int) {

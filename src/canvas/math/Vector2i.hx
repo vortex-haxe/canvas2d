@@ -163,6 +163,8 @@ package canvas.math;
 /**
  * A simple class to store 2D X and Y values.
  */
+@:noDoc
+@:noCompletion
 class BaseVector2i {
 	/**
 	 * The X value of this vector.

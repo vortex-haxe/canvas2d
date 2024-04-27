@@ -169,6 +169,8 @@ package canvas.math;
 /**
  * A simple class to store 3D X, Y and Z values.
  */
+@:noDoc
+@:noCompletion
 class BaseVector4i {
 	/**
 	 * The X value of this vector.

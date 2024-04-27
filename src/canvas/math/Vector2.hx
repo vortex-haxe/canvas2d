@@ -132,6 +132,8 @@ package canvas.math;
 /**
  * A simple class to store 2D X and Y values.
  */
+@:noDoc
+@:noCompletion
 class BaseVector2 {
     /**
      * Static matrix used for intermediate calculations.

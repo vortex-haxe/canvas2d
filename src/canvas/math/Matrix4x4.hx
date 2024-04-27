@@ -109,6 +109,8 @@ import canvas.math.Vector4;
 /**
  * A simple 4x4 matrix class.
  */
+@:noDoc
+@:noCompletion
 class BaseMatrix4x4 {
     /**
      * Static matrix used for intermediate calculations.

@@ -149,6 +149,8 @@ package canvas.math;
 /**
  * A simple class to store 2D X, Y, width, and height values.
  */
+@:noDoc
+@:noCompletion
 class BaseRectanglei {
 	/**
 	 * The X value of this rectangle.
