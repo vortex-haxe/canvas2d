@@ -75,8 +75,8 @@ class Bitmap extends Canvas {
             _scrollRectUV.set(
                 scrollRect.x / bitmapData.size.x,
                 scrollRect.y / bitmapData.size.y,
-                scrollRect.width / bitmapData.size.x,
-                scrollRect.height / bitmapData.size.y,
+                (scrollRect.x + scrollRect.width) / bitmapData.size.x,
+                (scrollRect.x + scrollRect.height) / bitmapData.size.y,
             );
             RenderingServer.backend.quadRenderer.texture = bitmapData._data;
             RenderingServer.backend.quadRenderer.drawTexture(_pos.set(x, y), _size.set(bitmapData.size.x * scale.x, bitmapData.size.y * scale.y), tint, _scrollRectUV, Vector2.ZERO, 0);

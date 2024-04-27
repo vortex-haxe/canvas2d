@@ -73,6 +73,7 @@ class BitmapData implements IDisposable {
                 _data = RenderingServer.backend.createTexture(width, height, null, null, 4);
                 
                 RenderingServer.backend.setupFrameBuffer(_frameBuffer, _data);
+                RenderingServer.backend.useFrameBuffer(null);
 
             default:
                 size.set(width, height);
@@ -127,8 +128,8 @@ class BitmapData implements IDisposable {
         RenderingServer.backend.disposeTexture(_data);
 
         if(type == RENDER) {
-            RenderingServer.backend.useFrameBuffer(null);
             RenderingServer.backend.disposeFrameBuffer(_frameBuffer);
+            RenderingServer.backend.useFrameBuffer(null);
             _currentRenderBitmap = null;
         }
     }

@@ -51,7 +51,7 @@ class Project {
                 "linux"   => (Sys.systemName() == "Linux")   ? "1" : "0",
                 "bsd"     => (Sys.systemName() == "BSD")     ? "1" : "0",
                 "mac"     => (Sys.systemName() == "Mac")     ? "1" : "0",
-                "macos"   => (Sys.systemName() == "Mac")     ? "1" : "0"
+                "macos"   => (Sys.systemName() == "Mac")     ? "1" : "0",
             ]
         };
 

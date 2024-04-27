@@ -12,16 +12,20 @@ class OSDefineMacro {
 		switch (Sys.systemName()) {
 			case "Windows":
 				Compiler.define("windows", "1");
-
+				Compiler.define("desktop", "1");
+				
 			case "Linux":
 				Compiler.define("linux", "1");
-
+				Compiler.define("desktop", "1");
+				
 			case "BSD":
 				Compiler.define("bsd", "1");
-
+				Compiler.define("desktop", "1");
+				
 			case "Mac":
 				Compiler.define("mac", "1");
 				Compiler.define("macos", "1");
+				Compiler.define("desktop", "1");
 		}
 		return Context.getBuildFields();
 	}
