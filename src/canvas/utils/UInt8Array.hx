@@ -13,7 +13,7 @@ import cpp.UInt8;
  * An array that stores UInt8 values.
  */
 @:forward
-abstract UInt8Array(Array<UInt8>) from BytesData to BytesData {
+abstract UInt8Array(BytesData) from BytesData to BytesData {
     public function new(length:Int):Void {
         this = cast new Vector(length);
     }
