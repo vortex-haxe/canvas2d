@@ -122,6 +122,13 @@ class RenderingBackend {
 	/**
 	 * TODO: Implement this!
 	 */
+	public function isFrameBufferValid(frameBuffer:IFrameBufferData):Bool {
+		return true;
+	}
+
+	/**
+	 * TODO: Implement this!
+	 */
 	public function createTexture(width:Int, height:Int, data:RawPointer<UInt8>, format:Null<Int> = null, channels:Int = 4, mipmaps:Bool = true, wrapping:TextureWrapping = REPEAT, filter:TextureFilter = LINEAR):ITextureData {
 		return null;
 	}

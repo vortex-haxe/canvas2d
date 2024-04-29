@@ -320,6 +320,17 @@ class OpenGLBackend extends RenderingBackend {
     }
 
     /**
+	 * TODO: Implement this!
+	 */
+	override function isFrameBufferValid(frameBuffer:IFrameBufferData):Bool {
+        Glad.bindFramebuffer(Glad.FRAMEBUFFER, frameBuffer.buffer);
+        if(Glad.checkFramebufferStatus(Glad.FRAMEBUFFER) == Glad.FRAMEBUFFER_COMPLETE)
+            return true;
+
+		return false;
+	}
+
+    /**
      * TODO: Implement this!
      */
     override function createTexture(width:Int, height:Int, data:RawPointer<UInt8>, format:Null<Int> = null, channels:Int = 4, mipmaps:Bool = true, wrapping:TextureWrapping = REPEAT, filter:TextureFilter = LINEAR):ITextureData {
