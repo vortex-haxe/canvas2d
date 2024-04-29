@@ -153,6 +153,7 @@ class BitmapData implements IDisposable {
             return;
         }
         _currentRenderBitmap = this;
+        RenderingServer.backend.useFrameBuffer(_frameBuffer);
     }
 
     /**
@@ -169,6 +170,7 @@ class BitmapData implements IDisposable {
             return;
         }
         _currentRenderBitmap = null;
+        RenderingServer.backend.useFrameBuffer(null);
     }
 
     // [ Private API ] //
