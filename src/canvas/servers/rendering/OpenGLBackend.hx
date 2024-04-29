@@ -233,8 +233,6 @@ class OpenGLFrameBuffer implements IFrameBufferData {
 class OpenGLBackend extends RenderingBackend {
     private static var _vec:Vector2 = new Vector2();
 
-    private var colorRectShader:Shader;
-
     /**
      * Initializes this rendering backend.
      */

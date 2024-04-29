@@ -71,7 +71,9 @@ interface IFrameBufferData {
 
 class RenderingBackend {
 	public var quadRenderer:IQuadRenderer;
+	
 	public var defaultShader:Shader;
+	public var colorRectShader:Shader;
 
 	public function new() {}
 
