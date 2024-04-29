@@ -65,9 +65,9 @@ class AssetCache<T:IDisposable> implements IDisposable {
      * @param  item  The item to remove.
      */
     public function removeItem(item:T):Void {
-        for(i in _cache) {
+        for(key => i in _cache) {
             if(i == item) {
-                _cache.remove(item);
+                _cache.remove(key);
                 break;
             }
         }

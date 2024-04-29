@@ -13,6 +13,8 @@ import stb.Vorbis;
 
 import al.AL;
 
+import sys.FileSystem;
+
 import canvas.servers.AudioServer;
 import canvas.utils.AssetCache.IDisposable;
 
