@@ -1,6 +1,9 @@
 package canvas.graphics;
 
+import cpp.Star;
+import cpp.UInt8;
 import cpp.Pointer;
+
 import stb.Image;
 
 import canvas.servers.RenderingServer;
