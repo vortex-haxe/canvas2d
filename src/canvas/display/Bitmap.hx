@@ -98,7 +98,7 @@ class Bitmap extends Canvas {
      * all of it's properties.
      */
     override function dispose() {
-        scrollRect = null;
+        @:bypassAccessor scrollRect = null;
         bitmapData = null;
         shader = null;
         @:bypassAccessor tint = null;
