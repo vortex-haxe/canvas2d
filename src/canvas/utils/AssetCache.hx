@@ -49,6 +49,31 @@ class AssetCache<T:IDisposable> implements IDisposable {
     }
 
     /**
+     * Removes an item of the given key
+     * from the cache.
+     * 
+     * @param  key  A key to the item to remove.
+     */
+    public function remove(key:String):Void {
+        if(_cache.exists(key))
+            _cache.remove(key);
+    }
+
+    /**
+     * Directly removes an item from the cache.
+     * 
+     * @param  item  The item to remove.
+     */
+    public function removeItem(item:T):Void {
+        for(i in _cache) {
+            if(i == item) {
+                _cache.remove(item);
+                break;
+            }
+        }
+    }
+
+    /**
      * Disposes everything in this cache.
      */
     public function dispose():Void {

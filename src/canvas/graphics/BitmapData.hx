@@ -6,6 +6,8 @@ import cpp.Pointer;
 
 import stb.Image;
 
+import sys.FileSystem;
+
 import canvas.servers.RenderingServer;
 import canvas.servers.RenderingServer.ITextureData;
 
@@ -107,6 +109,10 @@ class BitmapData implements IDisposable {
      * @param  filePath  The path to the image to load.
      */
     public static function fromFile(filePath:String):BitmapData {
+        if(!FileSystem.exists(filePath)) {
+            Logs.trace('Image at ${filePath} doesn\'t exist!', ERROR);
+            return null;
+        }
         final bmp = new BitmapData();
         bmp.filePath = filePath;
         

@@ -46,6 +46,10 @@ class AudioBuffer implements IDisposable {
      * @param  filePath  The path to the audio to load.
      */
     public static function fromFile(filePath:String):AudioBuffer {
+        if(!FileSystem.exists(filePath)) {
+            Logs.trace('Audio file at ${filePath} doesn\'t exist!', ERROR);
+            return null;
+        }
         final aud = new AudioBuffer();
         aud.filePath = filePath;
         aud.buffer = AudioServer.backend.createAudioBuffer();
