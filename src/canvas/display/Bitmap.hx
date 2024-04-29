@@ -64,6 +64,7 @@ class Bitmap extends Canvas {
     override function draw() {
         @:privateAccess
         if(bitmapData != null && bitmapData._data != null) {
+            final _curR = BitmapData._currentRenderBitmap;
             if(bitmapData.type == RENDER) {
                 RenderingServer.backend.useFrameBuffer(null);
                 Application.current.window.changeViewportSize(Application.current.window.size.x, Application.current.window.size.y);
@@ -85,9 +86,9 @@ class Bitmap extends Canvas {
             RenderingServer.backend.quadRenderer.texture = bitmapData._data;
             RenderingServer.backend.quadRenderer.drawTexture(_pos.set(x, y), _size.set(bitmapData.size.x * scale.x, bitmapData.size.y * scale.y), tint, _scrollRectUV, Vector2.ZERO, 0);
         
-            if(bitmapData.type == RENDER) {
-                RenderingServer.backend.useFrameBuffer(bitmapData._frameBuffer);
-                Application.current.window.changeViewportSize(bitmapData.size.x, bitmapData.size.y);
+            if(bitmapData.type == RENDER && _curR != null) {
+                RenderingServer.backend.useFrameBuffer(_curR._frameBuffer);
+                Application.current.window.changeViewportSize(_curR.size.x, _curR.size.y);
             }
         }
         super.draw();

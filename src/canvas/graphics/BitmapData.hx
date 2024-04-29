@@ -8,12 +8,12 @@ import stb.Image;
 
 import sys.FileSystem;
 
-import canvas.servers.RenderingServer;
-import canvas.servers.RenderingServer.ITextureData;
-
+import canvas.app.Application;
 import canvas.math.Vector2i;
+
 import canvas.utils.UInt8Array;
 import canvas.utils.AssetCache.IDisposable;
+import canvas.servers.RenderingServer;
 
 enum abstract BitmapType(Int) from Int to Int {
     final NORMAL = 0;
@@ -154,6 +154,9 @@ class BitmapData implements IDisposable {
         }
         _currentRenderBitmap = this;
         RenderingServer.backend.useFrameBuffer(_frameBuffer);
+
+        final window = Application.current.window;
+        window.changeViewportSize(size.x, size.y);
     }
 
     /**
@@ -171,6 +174,9 @@ class BitmapData implements IDisposable {
         }
         _currentRenderBitmap = null;
         RenderingServer.backend.useFrameBuffer(null);
+
+        final window = Application.current.window;
+        window.changeViewportSize(window.size.x, window.size.y);
     }
 
     // [ Private API ] //
