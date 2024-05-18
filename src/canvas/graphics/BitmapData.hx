@@ -132,6 +132,7 @@ class BitmapData implements IDisposable {
      * Disposes of this bitmap and removes it's
      * properties from memory.
      */
+    // TODO: is this even disposing correctly?
     public function dispose():Void {
         size = null;
         RenderingServer.backend.disposeTexture(_data);

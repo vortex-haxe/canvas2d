@@ -129,6 +129,7 @@ class Application extends Canvas {
 				// I'll see if it causes issues later on
 				Gc.run(true);
 				Gc.run(false);
+				Gc.compact();
 
 				_deltaTime %= fpsFract;
 			}
