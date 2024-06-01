@@ -1,5 +1,7 @@
 package canvas.utils;
 
+import sys.FileSystem;
+
 import canvas.graphics.Font;
 import canvas.graphics.BitmapData;
 
@@ -15,6 +17,15 @@ class Assets {
     public static function clearCache():Void {
         for(cache in [bitmapCache, soundCache, fontCache])
             cache.dispose();
+    }
+
+    /**
+     * Returns whether or not a given asset path exists.
+     * 
+     * @param  path  The asset path to check.
+     */
+    public static function exists(path:String):Bool {
+        return FileSystem.exists(path);
     }
 
     /**
