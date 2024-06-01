@@ -270,6 +270,7 @@ class OpenALBackend extends MixerBackend {
 	}
 
 	override function set_gain(newGain:Single):Single {
+		newGain = Math.max(Math.min(newGain, 1), 0);
 		AL.listenerf(AL.GAIN, newGain);
 		return gain = newGain;
 	}
