@@ -306,7 +306,8 @@ class OpenGLBackend extends RenderingBackend {
 	 * TODO: Implement this!
 	 */
 	override function disposeFrameBuffer(frameBuffer:IFrameBufferData):Void {
-        Glad.deleteFramebuffers(1, Helpers.tempPointer(frameBuffer.buffer));
+        var id:UInt32 = cast frameBuffer.buffer;
+        Glad.deleteFramebuffers(1, Helpers.tempPointer(id));
     }
 
     /**
@@ -443,7 +444,8 @@ class OpenGLBackend extends RenderingBackend {
         if (quadRenderer.shader == shader)
             quadRenderer.shader = null;
 
-        Glad.deleteProgram(shader.shader);
+        var id:UInt32 = cast shader.shader;
+        Glad.deleteProgram(id);
     }
 
     override inline function setUniformInt(shader:IShaderData, name:ConstCharStar, value:Int) {
