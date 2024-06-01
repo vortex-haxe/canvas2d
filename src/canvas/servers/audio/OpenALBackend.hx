@@ -111,7 +111,7 @@ class OpenALBackend extends MixerBackend {
 	 */
 	override function setSourceGain(source:IAudioSourceData, newGain:Float):Void {
 		if(source.source != 0) 
-			AL.sourcef(source.source, AL.SEC_OFFSET, newGain);
+			AL.sourcef(source.source, AL.GAIN, newGain);
 	}
 
 	/**
@@ -200,7 +200,7 @@ class OpenALBackend extends MixerBackend {
 	 * data to a given buffer.
 	 */
 	override function sendDataToBuffer(buffer:IAudioBufferData, format:Int, sampleData:Pointer<cpp.Void>, totalFrameCount:UInt64, sampleRate:UInt32):Void {
-		AL.bufferData(buffer.buffer, format, sampleData, untyped __cpp__("{0} * (unsigned long)(4)", totalFrameCount), sampleRate);
+		AL.bufferData(buffer.buffer, format, sampleData, untyped __cpp__("{0} * (unsigned long)({1})", totalFrameCount, format == AL.FORMAT_MONO16 ? 2 : 4), sampleRate);
 	}
 
 	/**
