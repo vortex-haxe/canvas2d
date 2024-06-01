@@ -148,6 +148,14 @@ class Window extends Canvas {
 	public var onMouseMove:Event<SDLMouseButton->Int->Int->Int->Int->Void> = new Event<SDLMouseButton->Int->Int->Int->Int->Void>();
 
 	/**
+	 * The signal that gets emitted when the window gets a file dropped onto it.
+	 * 
+	 * Parameters are:
+	 * - Path to the file that was dropped.
+	 */
+	public var onFileDrop:Event<String->Void> = new Event<String->Void>();
+
+	/**
 	 * The signal that gets emitted when the window receives an
 	 * event that isn't handled by Canvas2D automatically.
 	 */
@@ -254,6 +262,9 @@ class Window extends Canvas {
 				case MOUSEBUTTONUP:
 					onMouseRelease.dispatch(_ev.ref.button.button);
 	
+				case DROPFILE:
+					onFileDrop.dispatch(cast _ev.ref.drop.file);
+
 				default:
 					onMiscEvent.dispatch(_ev.ref.window.event, _ev.ref);
 			}
