@@ -175,6 +175,11 @@ class Canvas implements IDisposable {
     public function dispose():Void {
         parent = null;
         @:bypassAccessor scale = null;
+        for(i in 0...children.length) {
+            final child:Canvas = children[i];
+            if(child != null)
+                child.dispose();
+        }
     }
 
     // --------------- //

@@ -112,14 +112,17 @@ class Application extends Canvas {
 							window.changeViewportSize(BitmapData._currentRenderBitmap.size.x, BitmapData._currentRenderBitmap.size.y);
 						}
 						window.update(_deltaTime);
-						window.draw();
+						if(!window._disposed)
+							window.draw();
 						
 						RenderingServer.backend.useFrameBuffer(null);
 	
-						if(BitmapData._currentRenderBitmap != null)
-							window.changeViewportSize(window.size.x, window.size.y);
-						
-						RenderingServer.backend.present(window);
+						if(!window._disposed) {
+							if(BitmapData._currentRenderBitmap != null)
+								window.changeViewportSize(window.size.x, window.size.y);
+							
+							RenderingServer.backend.present(window);
+						}
 					}
 				}
 	

@@ -218,7 +218,7 @@ class Window extends Canvas {
 						case CLOSE:
 							onClose.dispatch();
 							if(!onClose.cancelled)
-								dispose();
+								close();
 						
 						case MINIMIZED:
 							onMinimize.dispatch();
@@ -275,7 +275,7 @@ class Window extends Canvas {
 	 * Closes this window immediately.
 	 */
 	public function close():Void {
-		 dispose();
+		dispose();
 	}
 
 	/**
@@ -283,8 +283,12 @@ class Window extends Canvas {
 	 * properties from memory.
 	 */
 	override function dispose():Void {
-		Application.current.windows.remove(this);
-		DisplayServer.backend.disposeWindow(_nativeWindow);
+		if(!_disposed) {
+			_disposed = true;
+			Application.current.windows.remove(this);
+			DisplayServer.backend.disposeWindow(_nativeWindow);
+		}
+		super.dispose();
 	}
 
 	// ----------- //
@@ -295,6 +299,7 @@ class Window extends Canvas {
 	private static var _recti:Rectanglei = new Rectanglei();
 
 	private var _nativeWindow:IWindowData;
+	private var _disposed:Bool = false;
 
 	@:noCompletion
 	private function set_vsync(newValue:Bool):Bool {
