@@ -370,7 +370,8 @@ class OpenGLBackend extends RenderingBackend {
     override function disposeTexture(texture:ITextureData):Void {
         // Helpers.tempPointer is used because regular cpp.Pointer just doesn't work
         // :3   - what-is-a-git
-        Glad.deleteTextures(1, Helpers.tempPointer(texture.texture));
+        var id:UInt32 = cast texture.texture;
+        Glad.deleteTextures(1, Helpers.tempPointer(id));
     }
 
     /**
