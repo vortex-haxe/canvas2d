@@ -1,5 +1,6 @@
 package canvas.utils;
 
+import sys.io.File;
 import sys.FileSystem;
 
 import canvas.graphics.Font;
@@ -65,6 +66,15 @@ class Assets {
             fontCache.add(key, new Font(filePath));
 
         return fontCache.get(key);
+    }
+
+    /**
+     * Returns text data from a specified file path.
+     * 
+     * @param  filePath  A file path of the text file to load.
+     */
+    public static function getText(filePath:String):String {
+        return File.getContent(filePath);
     }
 
     // --------------- //
