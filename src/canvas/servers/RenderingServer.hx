@@ -16,7 +16,6 @@ import canvas.math.Rectanglei;
 import canvas.servers.rendering.*;
 
 typedef QuadFrame = {
-	var name:String;
 	var position:Vector2;
 	var offset:Vector2;
 	var size:Vector2;
