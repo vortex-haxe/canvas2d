@@ -1,3 +1,11 @@
+> [!IMPORTANT]
+> Canvas2D is being discontinued in favor of **zina.hx**, a simple graphics and audio API for Haxe.
+> 
+> It will be kept publicly archived for people who may still want to
+> give Canvas2D a try, or atleast to look at it's code.
+> 
+> You can find zina.hx on this same organization [here](https://github.com/zina-framework/zina.hx)!
+
 <img src="github/logo.png" align="right" width="128" height="128" />
 
 # Canvas2D 
